@@ -14,7 +14,7 @@ if(!this.multiplayer || multiplayer.version != VERSION){
 
 document.body.addEventListener('modsLoaded', function () {
 	var fs = require("fs");
-	var modFolder = "mods/multiplayer/";
+	var modFolder = simplify.getMod("multiplayer").getBaseDirectory().substr(7);
 	var initialized = false;
 	var config = undefined;
 	function update(){
