@@ -1,0 +1,6 @@
+{
+	"server": {
+		"address": "localhost:1423",
+		"type": "http"
+	}
+}

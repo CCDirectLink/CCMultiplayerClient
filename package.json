@@ -1,0 +1,5 @@
+{
+	"name": "multiplayer",
+	"main": "mod.js",
+	"table": "definitions.db"
+}
