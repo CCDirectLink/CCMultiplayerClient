@@ -59,7 +59,7 @@ var multiplayer = new function(){
 						copyEntityAnimation(entity);
 						mmoConnection.updateEntityAnimation(entity.multiplayerId, entity.face, animation);
 					}
-					
+
 					if(health !== entity.lastHealth){
 						entity.lastHealth = health;
 						mmoConnection.updateEntityHealth(entity.multiplayerId, health);
@@ -175,7 +175,9 @@ var multiplayer = new function(){
 			};
 		
 		//Intercept spawn
-		cc.ig.gameMain[cc.ig.varNames.gameMainSpawnEntity] = function(type, x, y, z, settings, showAppearEffects){ return multiplayer.onEntitySpawn(type, x, y, z, settings, showAppearEffects) };
+		cc.ig.gameMain[cc.ig.varNames.gameMainSpawnEntity] = function(type, x, y, z, settings, showAppearEffects){ 
+			return multiplayer.onEntitySpawn(type, x, y, z, settings, showAppearEffects) 
+		};
 		
 		buttons = simplify.getInnerGui(cc.ig.GUI.menues[15].children[2])[cc.ig.varNames.titleScreenButtons];
 		//buttons.splice(2, 2);
@@ -255,8 +257,9 @@ var multiplayer = new function(){
 	this.spawnMultiplayerEntity = function(e){
 		new cc.sc.EnemyType(e.settings.enemyInfo.type).load(function(){
 			var entity = multiplayer.onEntitySpawn(e.type, e.pos.x, e.pos.y, e.pos.z, e.settings);
-			
+
 			entities[e.id] = entity;
+			entity.multiplayerId = e.id;
 			
 			var protectedPos = {xProtected: e.pos.x, yProtected: e.pos.y, zProtected: e.pos.z};
 			
@@ -318,6 +321,8 @@ var multiplayer = new function(){
 		if(!entities[id])
 			return;
 
+		console.log("Set " + id + "'s health to " + health);
+
 		simplify.setCurrentHp(entities[id], health);
 	}
 	
@@ -357,6 +362,12 @@ var multiplayer = new function(){
 	
 	this.onEntityKilled = function(multiplayerId){
 		mmoConnection.killEntity(multiplayerId);
+
+		if(!entities[multiplayerId])
+			return;
+		
+		entities[multiplayerId] = undefined;
+		delete entities[multiplayerId];
 	}
 	
 	this.onEntitySpawn = function(type, x, y, z, settings, showAppearEffects){
@@ -397,20 +408,24 @@ var multiplayer = new function(){
 		if(entity && !entity.multiplayerId){
 			entity.settings = settings;
 			
-			entity.multiplayerId = nextEID;
-			nextEID++;
+			if(host) {
+				entity.multiplayerId = nextEID;
+				entities[nextEID] = entity;
+				nextEID++;
 			
-			var isRecursive = false;
-			try {
-				JSON.stringify(settings);
-			} catch (e) {
-				if (e.name = 'TypeError')
-					isRecursive = true;
-				else
-					throw e;
+				var isRecursive = false;
+				try {
+					JSON.stringify(settings);
+				} catch (e) {
+					if (e.name = 'TypeError')
+						isRecursive = true;
+					else
+						throw e;
+				}
+				
+				mmoConnection.registerEntity(entity.multiplayerId, realType, {x: x, y: y, z: z}, isRecursive ? {} : settings);
 			}
-			
-			mmoConnection.registerEntity(entity.multiplayerId, realType, {x: x, y: y, z: z}, isRecursive ? {} : settings);
+
 			entity.lastPosition = {x: x, y: y, z: z};
 		}
 		
