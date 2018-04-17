@@ -182,9 +182,9 @@ var multiplayer = new function(){
 		buttons = simplify.getInnerGui(cc.ig.GUI.menues[15].children[2])[cc.ig.varNames.titleScreenButtons];
 		//buttons.splice(2, 2);
 		//buttons[2].a.g.y = 80;
-		buttons[2].ha("Connect", true);
-		buttons[2].cc_original = buttons[2].cc;
-		buttons[2].cc = multiplayer.onConnect;
+		buttons[2][cc.ig.GUI.renameTextButton]("Connect", true);
+		buttons[2].originalCallback = buttons[2][cc.ig.GUI.callbackFunction];
+		buttons[2][cc.ig.GUI.callbackFunction] = multiplayer.onConnect;
 		mmoConnection = new MmoConnection(this, config.finalAddress);
 		
 	}
@@ -198,7 +198,7 @@ var multiplayer = new function(){
 	
 	this.onIdentified = function(successfull, data){
 		if(successfull){
-			buttons[2].cc_original();
+			buttons[2].originalCallback();
 			initialized = true;
 			console.log('Indentified as ' + data.success);
 			host = data.isHost;
