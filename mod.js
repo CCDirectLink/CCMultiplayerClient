@@ -44,7 +44,7 @@ document.body.addEventListener('modsLoaded', function () {
 			simplify.loadScript(config.finalAddress + "socket.io/socket.io.js", function(){
 				simplify.loadScript(modFolder + "multiplayer.js", function(){
 					simplify.loadScript(modFolder + "connection.js", function(){
-						ig.root = config.finalAddress;
+						//ig.root = config.finalAddress;
 						multiplayer.initialize(config);
 						initialized = true;
 						console.log("Multiplayer loaded!");
