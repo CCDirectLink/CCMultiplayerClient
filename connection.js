@@ -52,6 +52,10 @@ var MmoConnection = function(multiplayer, address){
 		if(indentified)
 			socket.emit('updateEntityState', {id: id, state: state});
 	}
+	this.updateEntityTarget = function(id, target){
+		if(indentified)
+			socket.emit('updateEntityTarget', {id: id, target: target});
+	}
 	this.killEntity = function(id){
 		if(indentified)
 			socket.emit('killEntity', {id: id});
@@ -91,6 +95,9 @@ var MmoConnection = function(multiplayer, address){
 	});
 	socket.on('updateEntityState', function(data){
 		multiplayer.updateEntityState(data.id, data.state);
+	});
+	socket.on('updateEntityTarget', function(data){
+		multiplayer.updateEntityTarget(data.id, data.target);
 	});
 	socket.on('updateEntityHealth', function(data){
 		multiplayer.updateEntityHealth(data.id, data.hp);

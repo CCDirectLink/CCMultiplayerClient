@@ -19,17 +19,17 @@ var multiplayer = new function(){
 	
 	this.update = function(){
 		if(cc.ig.playerInstance() && initialized){
-			var p = cc.ig.gameMain.getEntityPosition(cc.ig.playerInstance());
-			var entity = cc.ig.playerInstance();
-			var faceing = entity.face;
-			var anim = simplify.getAnimation(entity);
-			var animTimer = simplify.getAnimationTimer(entity);
+			var player = cc.ig.playerInstance();
+			var p = cc.ig.gameMain.getEntityPosition(player);
+			var faceing = player.face;
+			var anim = simplify.getAnimation(player);
+			var animTimer = simplify.getAnimationTimer(player);
 			if(!comparePosition(p, pos)){
 				copyPosition(p, pos);
 				mmoConnection.updatePosition(p);
 			}
 			if(!compareAnimation(faceing, anim)){
-				copyAnimation(entity);
+				copyAnimation(player);
 				mmoConnection.updateAnimation(faceing, anim);
 			}
 			
@@ -65,9 +65,17 @@ var multiplayer = new function(){
 						mmoConnection.updateEntityHealth(entity.multiplayerId, health);
 					}
 					
-					if(state != entity.oldState){
+					if(state !== entity.oldState){
 						entity.oldState = state;
 						mmoConnection.updateEntityState(entity.multiplayerId, state);
+					}
+
+					if(entity.target !== entity.lastTarget) {
+						entity.lastTarget = entity.target;
+
+						var target = entity.target ? (entity.target.multiplayerId || 0) : null; 
+
+						mmoConnection.updateEntityTarget(entity.multiplayerId, target); //entity.multiplayerId is undefined for player
 					}
 				}
 			}
@@ -106,6 +114,8 @@ var multiplayer = new function(){
 	}
 	
 	this.onMapEnter = function(data){
+		new cc.sc.EnemyType('multiplayer').load();
+
 		if(!host){
 			var entities = data.entities;
 			for(var i = 0; i < entities.length; i++){
@@ -214,22 +224,19 @@ var multiplayer = new function(){
 		if(isEntering){
 			var interv = setInterval(function(){
 				if(cc.ig.gameMain.entities.length > 0 && (typeof cc.ig.gameMain.getLoadingState() !== "string" || cc.ig.gameMain.getLoadingState().indexOf("LOADING MAP: ") == -1)){
-					var entity = cc.ig.gameMain.spawnEntity("NPC", pos.x, pos.y, pos.z, {
-						name: player,
-						characterName: "main.lea",
-						npcStates: [{
-							condition: "",
-							reactType: "FIXED_POS",
-							face: "SOUTH",
-							config: "normal",
-							action: [],
-							hidden: false,
-							event: []
-						}],
-						"mapId": 233
+					new cc.sc.EnemyType('multiplayer').load(function(){ //Make sure entity is loaded
+						var entity = cc.ig.gameMain.spawnEntity("Enemy", pos.x, pos.y, pos.z, {
+							name: player,
+							enemyInfo: {
+								type: "multiplayer",
+								group: "",
+								party: "PLAYER"
+							},
+							"mapId": 233
+						});
+						players[player] = {name: player, pos: {x: pos.x, y: pos.y, z: pos.z}, entity: entity};
+						console.log(players[player]);
 					});
-					players[player] = {name: player, pos: {x: pos.x, y: pos.y, z: pos.z}, entity: entity};
-					console.log(players[player]);
 					clearInterval(interv);
 				}
 			});
@@ -315,6 +322,23 @@ var multiplayer = new function(){
 		
 		entities[id][cc.ig.varNames.currentState] = {protected: state};
 		new cc.ig.events.SET_ENEMY_STATE({enemy: entities[id], enemyState: state}).start();
+	}
+
+	this.updateEntityTarget = function(id, target) {
+		var entity;
+
+		if(target === null) 
+			entity = null;
+		else if(target.constructor === String)
+			entity = players[target];
+		else
+			entity = entities[target];
+
+		if(entity === undefined)
+			return console.warn("Could not find entity " + target);
+
+		simplify.setEntityTarget(entities[id], target);
+		entities[id].lastTarget = entities[id].target; // In order to avoid sending an target update
 	}
 
 	this.updateEntityHealth = function(id, health){
@@ -417,7 +441,7 @@ var multiplayer = new function(){
 				try {
 					JSON.stringify(settings);
 				} catch (e) {
-					if (e.name = 'TypeError')
+					if (e.name === 'TypeError')
 						isRecursive = true;
 					else
 						throw e;
