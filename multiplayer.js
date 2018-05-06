@@ -330,7 +330,7 @@ var multiplayer = new function(){
 		if(target === null) 
 			entity = null;
 		else if(target.constructor === String)
-			entity = players[target];
+			entity = players[target].entity;
 		else
 			entity = entities[target];
 
