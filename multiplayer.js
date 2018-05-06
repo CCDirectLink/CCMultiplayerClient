@@ -337,7 +337,7 @@ var multiplayer = new function(){
 		if(entity === undefined)
 			return console.warn("Could not find entity " + target);
 
-		simplify.setEntityTarget(entities[id], target);
+		simplify.setEntityTarget(entities[id], entity);
 		entities[id].lastTarget = entities[id].target; // In order to avoid sending an target update
 	}
 
