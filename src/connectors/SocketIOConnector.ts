@@ -1,4 +1,6 @@
-class SocketIoConnector implements IConnection {
+import { Multiplayer } from '../multiplayer';
+
+export class SocketIoConnector implements IConnection {
     private readonly PATH = 'socket.io/socket.io.js';
 
     private main: Multiplayer;
@@ -14,20 +16,24 @@ class SocketIoConnector implements IConnection {
         return type === 'http' || type === 'https';
     }
 
-    public load(): Promise<void> {
-        return new Promise((resolve, reject) => {
-            simplify.loadScript(this.main.config.modPath + this.PATH, () => {
+    public async load(): Promise<void> {
+        await new Promise((resolve, reject) => {
+            simplify.loadScript(this.address + this.PATH, () => {
                 resolve();
             });
         });
     }
 
-    public open(hostname: string, port: number, type?: string): Promise<void> {
+    public async open(hostname: string, port: number, type?: string): Promise<void> {
         this.socket = io(type + '://' + hostname + ':' + port + '/');
 
-        return new Promise((resolve, reject) => {
+        await new Promise((resolve, reject) => {
             if (!this.socket) {
                 return reject();
+            }
+
+            if (this.socket.connected) {
+                return resolve();
             }
 
             this.socket.once('connected', () => {

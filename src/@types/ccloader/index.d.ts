@@ -25,5 +25,16 @@ interface Mod {
 }
 
 interface cc {
-
+    ig: cc.ig;
+}
+declare namespace cc {
+    interface ig {
+        GUI: ig.Gui;
+        varNames: ccig.varNames;
+    }
+    namespace ccig {
+        interface varNames {
+            titleScreenButtons: string;
+        }
+    }
 }

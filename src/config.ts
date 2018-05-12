@@ -1,6 +1,7 @@
-///<reference path="connectors/SocketIOConnector.ts"/>
+import { SocketIoConnector } from './connectors/socketIOConnector';
+import { Multiplayer } from './multiplayer';
 
-class MultiplayerConfig {
+export class MultiplayerConfig {
     public modPath: string;
     public hostname = 'localhost';
     public port = 1423;
@@ -15,14 +16,11 @@ class MultiplayerConfig {
 
     constructor(configPath?: string) {
         this.modPath = simplify.getMod('multiplayer').getBaseDirectory();
-
-        if (configPath) {
-            this.configPath = configPath;
-        }
+        this.configPath = this.modPath + (configPath || this.configPath);
     }
 
     public async load(): Promise<void> {
-        return new Promise<void>((resolve, rejected) => {
+        await new Promise<void>((resolve, rejected) => {
             simplify.resources.loadJSON(this.configPath, (data: IConfigFile) => {
                 this.hostname = data.server.hostname;
                 this.port = data.server.port;

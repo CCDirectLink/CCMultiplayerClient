@@ -74,7 +74,7 @@ declare namespace simplify {
         generatePatches(mod: string | Mod): void;
         generatePatch(original: string | object, modified: string | object, message?: string): void;
         registerHandler(handler: (settings: any) => any | undefined, filter?: RegExp, beforeCall?: boolean): void;
-        loadFile(path: string, callback: (content: string) => void): void;
-        loadJSON(path: string, callback: (content: any) => void): void;
+        loadFile(path: string, callback: (content: string) => void, errorCallback?: (error: any) => void): void;
+        loadJSON(path: string, callback: (content: any) => void, errorCallback?: (error: any) => void): void;
     }
 }
