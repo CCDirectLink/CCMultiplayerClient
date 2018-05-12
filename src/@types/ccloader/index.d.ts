@@ -26,15 +26,27 @@ interface Mod {
 
 interface cc {
     ig: cc.ig;
+    sc: cc.sc;
 }
 declare namespace cc {
     interface ig {
         GUI: ig.Gui;
         varNames: ccig.varNames;
+        gameMain: ig.GameMain;
     }
     namespace ccig {
         interface varNames {
             titleScreenButtons: string;
+            gameMainLoadMap: string;
+        }
+    }
+
+    interface sc {
+        EnemyType: ccsc.EnemyType;
+    }
+    namespace ccsc {
+        interface EnemyType {
+            new (name: string): sc.EnemyType;
         }
     }
 }

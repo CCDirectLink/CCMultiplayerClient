@@ -11,6 +11,9 @@ interface sc {
 
 declare namespace ig {
     // Please note that some of these are not reflected in the original source. They are just here for convinience.
+    interface GameMain {
+        [key: string]: any;
+    }
     interface System {
         regainFocus(): void;
         setFocusLost(): void;
@@ -18,7 +21,8 @@ declare namespace ig {
     }
 
     interface Entity {
-
+        type: string;
+        settings: any;
     }
     interface ActionStep {
 
@@ -50,5 +54,15 @@ declare namespace ig {
         x: number;
         y: number;
         z: number;
+    }
+
+    interface Map {
+        entities: Entity[];
+    }
+}
+
+declare namespace sc {
+    interface EnemyType {
+        load(callback?: () => void): void;
     }
 }

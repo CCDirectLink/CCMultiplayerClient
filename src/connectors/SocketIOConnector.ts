@@ -36,7 +36,7 @@ export class SocketIoConnector implements IConnection {
                 return resolve();
             }
 
-            this.socket.once('connected', () => {
+            this.socket.once('connect', () => {
                 resolve();
             });
 

@@ -1,12 +1,15 @@
 import { MultiplayerConfig } from './config';
+import { OnMapEnterListener } from './listeners/game/onMapEnter';
 
 export class Multiplayer {
     public config: MultiplayerConfig;
+    public name?: string;
+    public host = false;
+    public loadingMap = false;
 
     private connection!: IConnection;
     private startGame!: () => void;
-    private name?: string;
-    private host = false;
+    private connecting = false;
 
     constructor(config?: MultiplayerConfig) {
         if (config) {
@@ -27,8 +30,19 @@ export class Multiplayer {
     }
 
     public async connect(): Promise<void> {
-        console.log('[multiplayer] Connecting..');
-        await this.connection.open(this.config.hostname, this.config.port, this.config.type);
+        if (this.connecting) {
+            throw new Error('[multiplayer] Already connecting');
+        }
+
+        this.connecting = true;
+
+        if (!this.connection.isOpen()) {
+            console.log('[multiplayer] Connecting..');
+            await this.connection.open(this.config.hostname, this.config.port, this.config.type);
+        }
+
+        this.connecting = false;
+
         if (!this.connection.isOpen()) {
             throw new Error('[multiplyer] The connector lied about beeing connected :(');
         }
@@ -56,13 +70,22 @@ export class Multiplayer {
         buttons[2][cc.ig.GUI.callbackFunction] = this.startConnect.bind(this);
     }
 
+    private initializeListeners(): void {
+        const mapEnter = new OnMapEnterListener(this);
+
+        mapEnter.register();
+    }
+
     private startConnect(): void {
         this.connect()
             .then(() => {
                 console.log('[multiplayer] Connected');
                 this.startGame();
             })
-            .catch(console.error.bind(console));
+            .catch((err: any) => {
+                console.error(err);
+                this.connecting = false;
+            });
     }
 
     private showLogin(): Promise<string> {
