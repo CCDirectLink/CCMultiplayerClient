@@ -1,6 +1,7 @@
 import { MultiplayerConfig } from './config';
 import { OnMapEnterListener } from './listeners/game/onMapEnter';
 import { OnTeleportListener } from './listeners/game/onTeleport';
+import { IMultiplayerEntity } from './mpEntity';
 
 export class Multiplayer {
     public config: MultiplayerConfig;
@@ -8,6 +9,8 @@ export class Multiplayer {
     public name?: string;
     public host = false;
     public loadingMap = false;
+
+    public entities: IMultiplayerEntity[] = [];
 
     private startGame!: () => void;
     private connecting = false;

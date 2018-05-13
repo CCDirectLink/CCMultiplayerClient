@@ -33,12 +33,14 @@ declare namespace cc {
         GUI: ig.Gui;
         varNames: ccig.varNames;
         gameMain: ig.GameMain;
+        baseEntity: ig.Entity;
     }
     namespace ccig {
         interface varNames {
             titleScreenButtons: string;
             gameMainLoadMap: string;
             gameMainTeleport: string;
+            entityKill: string;
         }
     }
 

@@ -1,11 +1,9 @@
 import { Multiplayer } from '../../multiplayer';
 
 export class OnMapEnterListener {
-    private main: Multiplayer;
-
-    constructor(main: Multiplayer) {
-        this.main = main;
-    }
+    constructor(
+        private main: Multiplayer,
+    ) { }
 
     public register(): void {
         const originalLoad = cc.ig.gameMain[cc.ig.varNames.gameMainLoadMap];

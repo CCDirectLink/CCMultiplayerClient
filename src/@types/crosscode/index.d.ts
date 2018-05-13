@@ -22,6 +22,9 @@ declare namespace ig {
     }
 
     interface Entity {
+        [key: string]: any;
+        prototype: Entity;
+
         type: string;
         settings: any;
     }

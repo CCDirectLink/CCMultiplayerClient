@@ -1,11 +1,10 @@
 import { Multiplayer } from '../../multiplayer';
 
 export class OnTeleportListener {
-    private main: Multiplayer;
 
-    constructor(main: Multiplayer) {
-        this.main = main;
-    }
+    constructor(
+        private main: Multiplayer,
+    ) { }
 
     public register(): void {
         cc.ig.gameMain[cc.ig.varNames.gameMainTeleport] = (map: string, teleportPosition: any, hint: string) => {
