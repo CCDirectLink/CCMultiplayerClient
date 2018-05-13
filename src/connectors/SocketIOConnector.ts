@@ -12,10 +12,6 @@ export class SocketIoConnector implements IConnection {
         this.address = this.main.config.type + '://' + this.main.config.hostname + ':' + this.main.config.port + '/';
     }
 
-    public canHandle(type: string): boolean {
-        return type === 'http' || type === 'https';
-    }
-
     public async load(): Promise<void> {
         await new Promise((resolve, reject) => {
             simplify.loadScript(this.address + this.PATH, () => {
