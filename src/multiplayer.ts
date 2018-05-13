@@ -1,13 +1,14 @@
 import { MultiplayerConfig } from './config';
 import { OnMapEnterListener } from './listeners/game/onMapEnter';
+import { OnTeleportListener } from './listeners/game/onTeleport';
 
 export class Multiplayer {
     public config: MultiplayerConfig;
+    public connection!: IConnection;
     public name?: string;
     public host = false;
     public loadingMap = false;
 
-    private connection!: IConnection;
     private startGame!: () => void;
     private connecting = false;
 
@@ -72,8 +73,10 @@ export class Multiplayer {
 
     private initializeListeners(): void {
         const mapEnter = new OnMapEnterListener(this);
+        const teleport = new OnTeleportListener(this);
 
         mapEnter.register();
+        teleport.register();
     }
 
     private startConnect(): void {

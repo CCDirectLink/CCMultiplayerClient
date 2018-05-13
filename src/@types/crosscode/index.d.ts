@@ -13,6 +13,7 @@ declare namespace ig {
     // Please note that some of these are not reflected in the original source. They are just here for convinience.
     interface GameMain {
         [key: string]: any;
+        teleport(map: string, teleportPosition: any, hint: string): void;
     }
     interface System {
         regainFocus(): void;

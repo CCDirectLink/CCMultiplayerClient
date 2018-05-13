@@ -38,6 +38,7 @@ declare namespace cc {
         interface varNames {
             titleScreenButtons: string;
             gameMainLoadMap: string;
+            gameMainTeleport: string;
         }
     }
 
