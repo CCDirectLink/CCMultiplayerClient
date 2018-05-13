@@ -1,4 +1,5 @@
 import { MultiplayerConfig } from './config';
+import { OnEntityKilledListener } from './listeners/game/onKill';
 import { OnMapEnterListener } from './listeners/game/onMapEnter';
 import { OnTeleportListener } from './listeners/game/onTeleport';
 import { IMultiplayerEntity } from './mpEntity';
@@ -77,9 +78,11 @@ export class Multiplayer {
     private initializeListeners(): void {
         const mapEnter = new OnMapEnterListener(this);
         const teleport = new OnTeleportListener(this);
+        const killed = new OnEntityKilledListener(this);
 
         mapEnter.register();
         teleport.register();
+        killed.register();
     }
 
     private startConnect(): void {
