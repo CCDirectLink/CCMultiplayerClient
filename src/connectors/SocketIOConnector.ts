@@ -114,7 +114,7 @@ export class SocketIoConnector implements IConnection {
             callback(data.player, data.pos);
         });
     }
-    public onUpdateAnimation(callback: (player: string, face: string, anim: string) => void): void {
+    public onUpdateAnimation(callback: (player: string, face: ig.Vector2, anim: string) => void): void {
         this.socket.on('onUpdateAnimation', (data: any) => {
             callback(data.player, data.face, data.anim);
         });

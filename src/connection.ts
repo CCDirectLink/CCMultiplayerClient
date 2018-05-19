@@ -26,7 +26,7 @@ interface IConnection {
     onUpdatePostion(callback:
         (player: string, pos: ig.Vector3) => void): void;
     onUpdateAnimation(callback:
-        (player: string, face: string, anim: string) => void): void;
+        (player: string, face: ig.Vector2, anim: string) => void): void;
     onUpdateAnimationTimer(callback:
         (player: string, timer: number) => void): void;
 

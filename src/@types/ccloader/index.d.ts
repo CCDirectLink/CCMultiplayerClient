@@ -34,6 +34,9 @@ declare namespace cc {
         varNames: ccig.varNames;
         gameMain: ig.GameMain;
         baseEntity: ig.Entity;
+        entityList: ig.EntityList;
+        events: ig.EventList;
+        TeleportPosition: ig.TeleportPosition;
     }
     namespace ccig {
         interface varNames {
@@ -41,6 +44,11 @@ declare namespace cc {
             gameMainLoadMap: string;
             gameMainTeleport: string;
             entityKill: string;
+            gameMainSpawnEntity: string;
+            entityData: string;
+            entityPosition: string;
+            currentAnimation: string;
+            currentState: string;
         }
     }
 
