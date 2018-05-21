@@ -69,7 +69,7 @@ export class SocketIoConnector implements IConnection {
     public updatePersition(position: ig.Vector3): void {
         this.socket.emit('updatePosition', position);
     }
-    public updateAnimation(face: string, anim: string): void {
+    public updateAnimation(face: ig.Vector2, anim: string): void {
         this.socket.emit('updateAnimation', {face, anim});
     }
     public updateTimer(timer: number): void {
@@ -89,7 +89,7 @@ export class SocketIoConnector implements IConnection {
     public updateEntityPosition(id: number, pos: ig.Vector3): void {
         this.socket.emit('updateEntityPosition', {id, pos});
     }
-    public updateEntityAnimation(id: number, face: string, anim: string): void {
+    public updateEntityAnimation(id: number, face: ig.Vector2, anim: string): void {
         this.socket.emit('updateEntityAnimation', {id, face, anim});
     }
     public updateEntityHealth(id: number, health: number): void {
@@ -139,7 +139,7 @@ export class SocketIoConnector implements IConnection {
             callback(data.id, data.pos);
         });
     }
-    public onUpdateEntityAnimation(callback: (id: number, face: string, anim: string) => void): void {
+    public onUpdateEntityAnimation(callback: (id: number, face: ig.Vector2, anim: string) => void): void {
         this.socket.on('onUpdateEntityAnimation', (data: any) => {
             callback(data.id, data.face, data.anim);
         });
@@ -154,7 +154,7 @@ export class SocketIoConnector implements IConnection {
             callback(data.id, data.target);
         });
     }
-    public onUpdateEntityHealth(callback: (id: number, healp: number) => void): void {
+    public onUpdateEntityHealth(callback: (id: number, health: number) => void): void {
         this.socket.on('onUpdateEntityHealth', (data: any) => {
             callback(data.id, data.hp);
         });

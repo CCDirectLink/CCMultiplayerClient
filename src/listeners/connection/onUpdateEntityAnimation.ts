@@ -6,10 +6,10 @@ export class OnUpdateEntityAnimationListener {
     ) { }
 
     public register(): void {
-        this.main.connection.onPlayerChangeMap(this.onPlayerChangeMap); // TODO
+        this.main.connection.onUpdateEntityAnimation(this.onUpdateEntityAnimation);
     }
 
-    public onPlayerChangeMap(player: string, enters: boolean, position: ig.Vector3, map: string, marker: string): void {
+    public onUpdateEntityAnimation(id: number, face: ig.Vector2, anim: string): void {
         // TODO
     }
 }

@@ -6,10 +6,10 @@ export class OnUpdateEntityHealthListener {
     ) { }
 
     public register(): void {
-        this.main.connection.onPlayerChangeMap(this.onPlayerChangeMap); // TODO
+        this.main.connection.onUpdateEntityHealth(this.onUpdateEntityHealth);
     }
 
-    public onPlayerChangeMap(player: string, enters: boolean, position: ig.Vector3, map: string, marker: string): void {
+    public onUpdateEntityHealth(id: number, health: number): void {
         // TODO
     }
 }

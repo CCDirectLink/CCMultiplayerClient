@@ -8,7 +8,7 @@ interface IConnection {
     changeMap(name: string, marker: string): void;
 
     updatePersition(position: ig.Vector3): void;
-    updateAnimation(face: string, anim: string): void;
+    updateAnimation(face: ig.Vector2, anim: string): void;
     updateTimer(timer: number): void;
 
     spawnEntity(type: string, x: number, y: number, z: number, settings?: object, showAppearEffects?: boolean): void;
@@ -16,7 +16,7 @@ interface IConnection {
     killEntity(id: number): void;
 
     updateEntityPosition(id: number, pos: ig.Vector3): void;
-    updateEntityAnimation(id: number, face: string, anim: string): void;
+    updateEntityAnimation(id: number, face: ig.Vector2, anim: string): void;
     updateEntityHealth(id: number, health: number): void;
     updateEntityState(id: number, state: string): void;
     updateEntityTarget(id: number, target: string | number | null): void;
@@ -37,11 +37,11 @@ interface IConnection {
     onUpdateEntityPosition(callback:
         (id: number, pos: ig.Vector3) => void): void;
     onUpdateEntityAnimation(callback:
-        (id: number, face: string, anim: string) => void): void;
+        (id: number, face: ig.Vector2, anim: string) => void): void;
     onUpdateEntityState(callback:
         (id: number, state: string) => void): void;
     onUpdateEntityTarget(callback:
         (id: number, target: string | number | null) => void): void;
     onUpdateEntityHealth(callback:
-        (id: number, healp: number) => void): void;
+        (id: number, health: number) => void): void;
 }

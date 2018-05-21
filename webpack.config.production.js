@@ -20,7 +20,7 @@ const config = {
     output: {
         filename: 'mod.js',
         path: path.resolve(__dirname, 'dist')
-    },
+    }
 };
 
 module.exports = config;

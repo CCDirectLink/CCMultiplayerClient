@@ -6,10 +6,10 @@ export class OnUpdatePositionListener {
     ) { }
 
     public register(): void {
-        this.main.connection.onPlayerChangeMap(this.onPlayerChangeMap); // TODO
+        this.main.connection.onUpdatePostion(this.onUpdatePostion);
     }
 
-    public onPlayerChangeMap(player: string, enters: boolean, position: ig.Vector3, map: string, marker: string): void {
+    public onUpdatePostion(player: string, position: ig.Vector3): void {
         // TODO
     }
 }

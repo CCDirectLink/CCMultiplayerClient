@@ -6,10 +6,10 @@ export class OnUpdateAnimationTimerListener {
     ) { }
 
     public register(): void {
-        this.main.connection.onPlayerChangeMap(this.onPlayerChangeMap); // TODO
+        this.main.connection.onUpdateAnimationTimer(this.onUpdateAnimationTimer);
     }
 
-    public onPlayerChangeMap(player: string, enters: boolean, position: ig.Vector3, map: string, marker: string): void {
+    public onUpdateAnimationTimer(player: string, time: number): void {
         // TODO
     }
 }
