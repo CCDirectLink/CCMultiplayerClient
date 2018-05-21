@@ -18,7 +18,7 @@ interface simplify {
     runAction(action: ig.ActionStep, ...args: any[]): any;
     getEntityProxies(entity: ig.Entity): ig.Proxy[];
     killEntity(entity: ig.Entity, levelChange?: any): void;
-    setEntityTarget(entity: ig.Entity, target: ig.TargetableEntity): void;
+    setEntityTarget(entity: ig.Entity, target: ig.TargetableEntity | null): void;
     getProxyAction(action: any): any;
     getNextProxyAction(action: any): any;
 
