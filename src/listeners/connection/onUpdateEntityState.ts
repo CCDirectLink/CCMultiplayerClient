@@ -10,6 +10,11 @@ export class OnUpdateEntityStateListener {
     }
 
     public onUpdateEntityState(id: number, state: string): void {
-        // TODO
+        if (this.main.host || !this.main.entities[id]) {
+            return;
+        }
+
+        this.main.entities[id][cc.ig.varNames.currentState] = {protected: state};
+        new cc.ig.events.SET_ENEMY_STATE({enemy: this.main.entities[id], enemyState: state}).start();
     }
 }

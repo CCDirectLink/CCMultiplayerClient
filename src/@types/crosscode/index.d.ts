@@ -45,6 +45,9 @@ declare namespace ig {
         RhombusParticle: ig.EntityType;
         HiddenSkyBlock: ig.EntityType;
     }
+    interface Enemy extends Entity {
+
+    }
 
     interface Event {
         start(...args: any[]): any;
@@ -53,6 +56,7 @@ declare namespace ig {
         SWITCH_PLAYER_CONFIG: Events.SWITCH_PLAYER_CONFIG;
         CLEAR_ANIMATION: Events.CLEAR_ANIMATION;
         DO_ACTION: Events.DO_ACTION;
+        SET_ENEMY_STATE: Events.SET_ENEMY_STATE;
     }
 
 
@@ -113,6 +117,9 @@ declare namespace ig {
                 keepState: boolean,
                 action: any[],
             }): DO_ACTION;
+        }
+        interface SET_ENEMY_STATE extends Event {
+            new (settings: {enemy: ig.Enemy, enemyState: string}): SET_ENEMY_STATE;
         }
     }
 }
