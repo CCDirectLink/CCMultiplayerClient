@@ -49,6 +49,7 @@ declare namespace cc {
             entityPosition: string;
             currentAnimation: string;
             currentState: string;
+            systemHasFocusLost: string;
         }
     }
 

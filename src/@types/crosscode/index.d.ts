@@ -18,6 +18,7 @@ declare namespace ig {
         spawnEntity(type: string | ig.EntityType, x: number, y: number, z: number, settings: any, showAppearEffects?: boolean): ig.Entity;
     }
     interface System {
+        [key: string]: any;
         regainFocus(): void;
         setFocusLost(): void;
         addFocusListener(listener: () => void): void;

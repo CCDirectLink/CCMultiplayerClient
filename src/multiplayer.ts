@@ -14,6 +14,7 @@ import { OnUpdatePositionListener } from './listeners/connection/onUpdatePositio
 import { OnEntitySpawnListener } from './listeners/game/onEntitySpawn';
 import { OnEntityKilledListener } from './listeners/game/onKill';
 import { OnMapEnterListener } from './listeners/game/onMapEnter';
+import { OnMapLoadedListener } from './listeners/game/onMapLoaded';
 import { OnTeleportListener } from './listeners/game/onTeleport';
 import { IMultiplayerEntity } from './mpEntity';
 import { IPlayer } from './player';
@@ -50,6 +51,8 @@ export class Multiplayer {
 
     public initialize(): void {
         this.initializeGUI();
+        this.initializeListeners();
+        this.disableFocus();
     }
 
     public async connect(): Promise<void> {
@@ -157,11 +160,13 @@ export class Multiplayer {
         const teleport = new OnTeleportListener(this);
         const killed = new OnEntityKilledListener(this);
         const spawn = new OnEntitySpawnListener(this);
+        const mapLoaded = new OnMapLoadedListener(this);
 
         mapEnter.register();
         teleport.register();
         killed.register();
         spawn.register();
+        mapLoaded.register();
 
         this.entitySpawnListener = spawn;
 
@@ -233,5 +238,9 @@ export class Multiplayer {
 
             form.find('input[type=text]').focus();
         });
+    }
+
+    private disableFocus() {
+        ig.system[cc.ig.varNames.systemHasFocusLost] = () => false;
     }
 }
