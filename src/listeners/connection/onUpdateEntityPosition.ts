@@ -10,6 +10,10 @@ export class OnUpdateEntityPositionListener {
     }
 
     public onUpdateEntityPosition(id: number, pos: ig.Vector3): void {
-         // TODO
+        if (this.main.host || !this.main.entities[id]) {
+            return;
+        }
+
+        this.main.copyEntityPosition(pos, cc.ig.gameMain.getEntityPosition(this.main.entities[id]));
     }
 }

@@ -128,6 +128,21 @@ export class Multiplayer {
         });
     }
 
+    public copyPosition(from: ig.Vector3, to: ig.Vector3) {
+        to.x = from.x;
+        to.y = from.y;
+        to.z = from.z;
+    }
+    public copyEntityPosition(from: ig.Vector3, to: any) {
+        if (!to.xProtected) {
+            return this.copyPosition(from, to);
+        }
+
+        to.xProtected = from.x;
+        to.yProtected = from.y;
+        to.zProtected = from.z;
+    }
+
     private initializeGUI(): void {
         const buttons = simplify.getInnerGui(cc.ig.GUI.menues[15].children[2])[cc.ig.varNames.titleScreenButtons];
         // buttons.splice(2, 2);
