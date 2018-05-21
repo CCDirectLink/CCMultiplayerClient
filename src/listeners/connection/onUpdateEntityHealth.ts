@@ -10,6 +10,12 @@ export class OnUpdateEntityHealthListener {
     }
 
     public onUpdateEntityHealth(id: number, health: number): void {
-        // TODO
+        if (!this.main.entities[id]) {
+            return;
+        }
+
+        console.log('[multiplayer] Set ' + id + '\'s health to ' + health);
+
+        simplify.setCurrentHp(this.main.entities[id], health);
     }
 }
