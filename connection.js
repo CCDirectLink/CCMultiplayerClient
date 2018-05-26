@@ -3,7 +3,7 @@ var MmoConnection = function(multiplayer, address){
 	var indentified;
 	
 	this.identify = function(userName){
-		socket.emit('indentify', userName);
+		socket.emit('identify', userName);
 	}
 	
 	
