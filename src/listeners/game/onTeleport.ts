@@ -23,5 +23,6 @@ export class OnTeleportListener {
                 return;
             }
         }
+        this.main.connection.changeMap(map, null);
     }
 }

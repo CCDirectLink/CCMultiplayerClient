@@ -6,7 +6,7 @@ export class OnUpdateEntityTargetListener {
     ) { }
 
     public register(): void {
-        this.main.connection.onUpdateEntityTarget(this.onUpdateEntityTarget);
+        this.main.connection.onUpdateEntityTarget(this.onUpdateEntityTarget.bind(this));
     }
 
     public onUpdateEntityTarget(id: number, target: string | number | null): void {

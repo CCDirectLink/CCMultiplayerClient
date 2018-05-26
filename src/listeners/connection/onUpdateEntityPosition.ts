@@ -6,7 +6,7 @@ export class OnUpdateEntityPositionListener {
     ) { }
 
     public register(): void {
-        this.main.connection.onUpdateEntityPosition(this.onUpdateEntityPosition);
+        this.main.connection.onUpdateEntityPosition(this.onUpdateEntityPosition.bind(this));
     }
 
     public onUpdateEntityPosition(id: number, pos: ig.Vector3): void {

@@ -6,7 +6,7 @@ export class OnUpdateEntityHealthListener {
     ) { }
 
     public register(): void {
-        this.main.connection.onUpdateEntityHealth(this.onUpdateEntityHealth);
+        this.main.connection.onUpdateEntityHealth(this.onUpdateEntityHealth.bind(this));
     }
 
     public onUpdateEntityHealth(id: number, health: number): void {

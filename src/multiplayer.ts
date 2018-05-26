@@ -11,11 +11,19 @@ import { OnUpdateEntityPositionListener } from './listeners/connection/onUpdateE
 import { OnUpdateEntityStateListener } from './listeners/connection/onUpdateEntityState';
 import { OnUpdateEntityTargetListener } from './listeners/connection/onUpdateEntityTarget';
 import { OnUpdatePositionListener } from './listeners/connection/onUpdatePosition';
+import { EntityListener } from './listeners/game/entityListener';
+import { OnEntityAnimationListener } from './listeners/game/onEntityAnimation';
+import { OnEntityHealthChangeListener } from './listeners/game/onEntityHealthChange';
+import { OnEntityMoveListener } from './listeners/game/onEntityMove';
 import { OnEntitySpawnListener } from './listeners/game/onEntitySpawn';
+import { OnEntityTargetChangeListener } from './listeners/game/onEntityTargetChange';
 import { OnEntityKilledListener } from './listeners/game/onKill';
 import { OnMapEnterListener } from './listeners/game/onMapEnter';
 import { OnMapLoadedListener } from './listeners/game/onMapLoaded';
+import { OnPlayerAnimationListener } from './listeners/game/onPlayerAnimation';
+import { OnPlayerMoveListener } from './listeners/game/onPlayerMove';
 import { OnTeleportListener } from './listeners/game/onTeleport';
+import { PlayerListener } from './listeners/game/playerListener';
 import { IMultiplayerEntity } from './mpEntity';
 import { IPlayer } from './player';
 
@@ -51,7 +59,6 @@ export class Multiplayer {
 
     public initialize(): void {
         this.initializeGUI();
-        this.initializeListeners();
         this.disableFocus();
     }
 
@@ -72,6 +79,8 @@ export class Multiplayer {
         if (!this.connection.isOpen()) {
             throw new Error('[multiplyer] The connector lied about beeing connected :(');
         }
+
+        this.initializeListeners();
 
         const username = await this.showLogin();
         console.log('[multiplayer] Logging in as ' + username);
@@ -156,6 +165,26 @@ export class Multiplayer {
     }
 
     private initializeListeners(): void {
+        const entityListener = new EntityListener(this);
+        const playerListener = new PlayerListener(this);
+
+        entityListener.register();
+        playerListener.register();
+
+        const playerMove = new OnPlayerMoveListener(this);
+        const playerAnimation = new OnPlayerAnimationListener(this);
+        const entityMove = new OnEntityMoveListener(this);
+        const entityAnimation = new OnEntityAnimationListener(this);
+        const entityHealthChange = new OnEntityHealthChangeListener(this);
+        const entityTargetChange = new OnEntityTargetChangeListener(this);
+
+        playerMove.register(playerListener);
+        playerAnimation.register(playerListener);
+        entityMove.register(entityListener);
+        entityAnimation.register(entityListener);
+        entityHealthChange.register(entityListener);
+        entityTargetChange.register(entityListener);
+
         const mapEnter = new OnMapEnterListener(this);
         const teleport = new OnTeleportListener(this);
         const killed = new OnEntityKilledListener(this);

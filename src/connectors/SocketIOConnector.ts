@@ -63,7 +63,7 @@ export class SocketIoConnector implements IConnection {
             this.socket.emit('identify', username);
         });
     }
-    public changeMap(name: string, marker: string): void {
+    public changeMap(name: string, marker: string | null): void {
         this.socket.emit('changeMap', {name, marker});
     }
     public updatePersition(position: ig.Vector3): void {
@@ -103,59 +103,58 @@ export class SocketIoConnector implements IConnection {
     }
 
     public onPlayerChangeMap(callback:
-        (player: string, enters: boolean, position: ig.Vector3, map: string, marker: string) => void): void {
-
-            this.socket.on('onPlayerChangeMap', (data: any) => {
-                callback(data.player, data.enters, data.position, data.map, data.market);
-            });
+        (player: string, enters: boolean, position: ig.Vector3, map: string, marker: string | null) => void): void {
+        this.socket.on('onPlayerChangeMap', (data: any) => {
+            callback(data.player, data.enters, data.position, data.map, data.market);
+        });
     }
     public onUpdatePostion(callback: (player: string, pos: ig.Vector3) => void): void {
-        this.socket.on('onUpdatePostion', (data: any) => {
+        this.socket.on('updatePosition', (data: any) => {
             callback(data.player, data.pos);
         });
     }
     public onUpdateAnimation(callback: (player: string, face: ig.Vector2, anim: string) => void): void {
-        this.socket.on('onUpdateAnimation', (data: any) => {
+        this.socket.on('updateAnimation', (data: any) => {
             callback(data.player, data.face, data.anim);
         });
     }
     public onUpdateAnimationTimer(callback: (player: string, timer: number) => void): void {
-        this.socket.on('onUpdateAnimationTimer', (data: any) => {
+        this.socket.on('updateAnimationTimer', (data: any) => {
             callback(data.player, data.timer);
         });
     }
     public onRegisterEntity(callback: (id: number, type: string, pos: ig.Vector3, settings: object) => void): void {
-        this.socket.on('onPlayerChangeMap', (data: any) => {
-            callback(data.player, data.id, data.pos, data.settings);
+        this.socket.on('registerEntity', (data: any) => {
+            callback(data.id, data.type, data.pos, data.settings);
         });
     }
     public onKillEntity(callback: (id: number) => void): void {
-        this.socket.on('onKillEntity', (data: any) => {
+        this.socket.on('killEntity', (data: any) => {
             callback(data.id);
         });
     }
     public onUpdateEntityPosition(callback: (id: number, pos: ig.Vector3) => void): void {
-        this.socket.on('onUpdateEntityPosition', (data: any) => {
+        this.socket.on('updateEntityPosition', (data: any) => {
             callback(data.id, data.pos);
         });
     }
     public onUpdateEntityAnimation(callback: (id: number, face: ig.Vector2, anim: string) => void): void {
-        this.socket.on('onUpdateEntityAnimation', (data: any) => {
+        this.socket.on('updateEntityAnimation', (data: any) => {
             callback(data.id, data.face, data.anim);
         });
     }
     public onUpdateEntityState(callback: (id: number, state: string) => void): void {
-        this.socket.on('onUpdateEntityState', (data: any) => {
+        this.socket.on('updateEntityState', (data: any) => {
             callback(data.id, data.state);
         });
     }
     public onUpdateEntityTarget(callback: (id: number, target: string | number | null) => void): void {
-        this.socket.on('onUpdateEntityTarget', (data: any) => {
+        this.socket.on('updateEntityTarget', (data: any) => {
             callback(data.id, data.target);
         });
     }
     public onUpdateEntityHealth(callback: (id: number, health: number) => void): void {
-        this.socket.on('onUpdateEntityHealth', (data: any) => {
+        this.socket.on('updateEntityHealth', (data: any) => {
             callback(data.id, data.hp);
         });
     }

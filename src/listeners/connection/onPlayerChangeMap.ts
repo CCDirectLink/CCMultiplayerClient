@@ -7,10 +7,14 @@ export class OnPlayerChangeMapListener {
     ) { }
 
     public register(): void {
-        this.main.connection.onPlayerChangeMap(this.onPlayerChangeMap);
+        this.main.connection.onPlayerChangeMap(this.onPlayerChangeMap.bind(this));
     }
 
-    public onPlayerChangeMap(player: string, enters: boolean, position: ig.Vector3, map: string, marker: string): void {
+    public onPlayerChangeMap(player: string,
+                             enters: boolean,
+                             position: ig.Vector3,
+                             map: string,
+                             marker: string | null): void {
         if (enters) {
             const interv = setInterval(() => {
                 if (cc.ig.gameMain.entities.length > 0 &&

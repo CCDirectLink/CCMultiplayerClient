@@ -6,7 +6,7 @@ export class OnUpdatePositionListener {
     ) { }
 
     public register(): void {
-        this.main.connection.onUpdatePostion(this.onUpdatePostion);
+        this.main.connection.onUpdatePostion(this.onUpdatePostion.bind(this));
     }
 
     public onUpdatePostion(player: string, position: ig.Vector3): void {

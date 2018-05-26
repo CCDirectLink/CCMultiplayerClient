@@ -6,7 +6,7 @@ export class OnUpdateEntityStateListener {
     ) { }
 
     public register(): void {
-        this.main.connection.onUpdateEntityState(this.onUpdateEntityState);
+        this.main.connection.onUpdateEntityState(this.onUpdateEntityState.bind(this));
     }
 
     public onUpdateEntityState(id: number, state: string): void {

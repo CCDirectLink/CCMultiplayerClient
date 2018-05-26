@@ -6,7 +6,7 @@ export class OnRegisterEntityListener {
     ) { }
 
     public register(): void {
-        this.main.connection.onRegisterEntity(this.onRegisterEntity);
+        this.main.connection.onRegisterEntity(this.onRegisterEntity.bind(this));
     }
 
     public onRegisterEntity(id: number, type: string, pos: ig.Vector3, settings: object): void {

@@ -8,8 +8,8 @@ export class OnMapLoadedListener {
 
     public register(): void {
         const originalUpdate = cc.ig.gameMain.update;
-        cc.ig.gameMain.update = function() {
-                const result = originalUpdate.apply(cc.ig.gameMain, arguments);
+        cc.ig.gameMain.update = () => {
+                const result = originalUpdate.call(cc.ig.gameMain);
                 this.afterUpdate();
                 return result;
             };

@@ -5,7 +5,7 @@ interface IConnection {
     isOpen(): boolean;
 
     identify(username: string): Promise<IIdentifyResult>;
-    changeMap(name: string, marker: string): void;
+    changeMap(name: string, marker: string | null): void;
 
     updatePersition(position: ig.Vector3): void;
     updateAnimation(face: ig.Vector2, anim: string): void;
@@ -22,7 +22,7 @@ interface IConnection {
     updateEntityTarget(id: number, target: string | number | null): void;
 
     onPlayerChangeMap(callback:
-        (player: string, enters: boolean, position: ig.Vector3, map: string, marker: string) => void): void;
+        (player: string, enters: boolean, position: ig.Vector3, map: string, marker: string | null) => void): void;
     onUpdatePostion(callback:
         (player: string, pos: ig.Vector3) => void): void;
     onUpdateAnimation(callback:

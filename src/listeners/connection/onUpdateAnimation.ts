@@ -6,7 +6,7 @@ export class OnUpdateAnimationListener {
     ) { }
 
     public register(): void {
-        this.main.connection.onUpdateAnimation(this.onUpdateAnimation);
+        this.main.connection.onUpdateAnimation(this.onUpdateAnimation.bind(this));
     }
 
     public onUpdateAnimation(player: string, face: ig.Vector2, anim: string): void {

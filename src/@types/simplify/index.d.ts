@@ -12,8 +12,8 @@ interface simplify {
 
     getActiveMapName(): string;
     
-    getAnimation(entity: ig.Entity): any;
-    setAnimation(entity: ig.Entity, value: any): void;
+    getAnimation(entity: ig.Entity): string;
+    setAnimation(entity: ig.Entity, value: string | object): void;
 
     runAction(action: ig.ActionStep, ...args: any[]): any;
     getEntityProxies(entity: ig.Entity): ig.Proxy[];

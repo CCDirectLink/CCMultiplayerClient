@@ -37,6 +37,8 @@ declare namespace cc {
         entityList: ig.EntityList;
         events: ig.EventList;
         TeleportPosition: ig.TeleportPosition;
+        
+        playerInstance(): ig.Player;
     }
     namespace ccig {
         interface varNames {

@@ -6,7 +6,7 @@ export class OnUpdateAnimationTimerListener {
     ) { }
 
     public register(): void {
-        this.main.connection.onUpdateAnimationTimer(this.onUpdateAnimationTimer);
+        this.main.connection.onUpdateAnimationTimer(this.onUpdateAnimationTimer.bind(this));
     }
 
     public onUpdateAnimationTimer(player: string, time: number): void {

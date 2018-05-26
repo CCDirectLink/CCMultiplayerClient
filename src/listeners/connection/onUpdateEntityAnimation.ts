@@ -6,7 +6,7 @@ export class OnUpdateEntityAnimationListener {
     ) { }
 
     public register(): void {
-        this.main.connection.onUpdateEntityAnimation(this.onUpdateEntityAnimation);
+        this.main.connection.onUpdateEntityAnimation(this.onUpdateEntityAnimation.bind(this));
     }
 
     public onUpdateEntityAnimation(id: number, face: ig.Vector2, anim: string): void {

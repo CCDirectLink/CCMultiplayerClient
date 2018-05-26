@@ -58,11 +58,12 @@ export class OnEntitySpawnListener {
             }
         }
 
-        if (realType === undefined) {
-            throw new Error('Could not resolve entity type');
-        }
-
         const entity = cc.ig.gameMain.spawnEntity(type, x, y, z, settings, showAppearEffects);
+
+        if (realType === undefined) {
+            console.warn('Could not resolve entity type');
+            return entity;
+        }
 
         if (entity && !entity.multiplayerId) {
             entity.settings = settings;

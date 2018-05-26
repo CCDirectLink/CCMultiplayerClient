@@ -13,9 +13,13 @@ declare namespace ig {
     // Please note that some of these are not reflected in the original source. They are just here for convinience.
     interface GameMain {
         [key: string]: any;
+
+        entities: ig.Entity[];
+
         teleport(map: string, teleportPosition: ig.TeleportPosition, hint?: string): void;
         getLoadingState(): string;
         spawnEntity(type: string | ig.EntityType, x: number, y: number, z: number, settings: any, showAppearEffects?: boolean): ig.Entity;
+        getEntityPosition(entity: ig.Entity): ig.Vector3;
     }
     interface System {
         [key: string]: any;
@@ -34,6 +38,7 @@ declare namespace ig {
 
         type: string;
         settings: any;
+        face: ig.Vector2
     }
     interface EntityList {
         [key: string]: ig.EntityType | undefined;
@@ -45,8 +50,15 @@ declare namespace ig {
         OffsetParticle: ig.EntityType;
         RhombusParticle: ig.EntityType;
         HiddenSkyBlock: ig.EntityType;
+        Enemy: ig.EntityType;
     }
-    interface Enemy extends Entity {
+    interface TargetableEntity extends Entity {
+
+    }
+    interface Enemy extends TargetableEntity {
+
+    }
+    interface Player extends TargetableEntity {
 
     }
 
@@ -81,17 +93,18 @@ declare namespace ig {
     interface BaseParams {
 
     }
-    interface TargetableEntity extends Entity {
-
-    }
     interface Font {
         (path: string, charHeigt: number, firstChar: number): Font;
     }
     interface Vector2 {
+        [key: string]: number | undefined;
+
         x: number;
         y: number;
     }
     interface Vector3 {
+        [key: string]: number | undefined;
+
         x: number;
         y: number;
         z: number;

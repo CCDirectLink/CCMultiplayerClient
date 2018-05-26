@@ -6,7 +6,7 @@ export class OnKillEntityListener {
     ) { }
 
     public register(): void {
-        this.main.connection.onKillEntity(this.onKillEntity);
+        this.main.connection.onKillEntity(this.onKillEntity.bind(this));
     }
 
     public onKillEntity(id: number): void {
