@@ -1,0 +1,4 @@
+{
+	"name": "multiplayer",
+	"main": "dist/mod.js"
+}

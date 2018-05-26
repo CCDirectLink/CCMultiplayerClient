@@ -1,0 +1,114 @@
+{
+    "level": 10,
+    "params": {
+        "hp": 400,
+        "attack": 40,
+        "defense": 40,
+        "focus": 40
+    },
+    "elementModes": {
+        "NEUTRAL": {
+            "hp": 1,
+            "attack": 1,
+            "defense": 1,
+            "focus": 1,
+            "elemFactor": [1, 1, 1, 1]
+        },
+        "HEAT": {
+            "hp": 1,
+            "attack": 1.1,
+            "defense": 0.9,
+            "focus": 1,
+            "elemFactor": [0.5, 1.5, 1, 1]
+        },
+        "COLD": {
+            "hp": 1,
+            "attack": 1,
+            "defense": 1,
+            "focus": 1,
+            "elemFactor": [0.5, 1.5, 1, 1]
+        },
+        "SHOCK": {
+            "hp": 1,
+            "attack": 1,
+            "defense": 1,
+            "focus": 1,
+            "elemFactor": [1, 1, 0.5, 1.5]
+        },
+        "WAVE": {
+            "hp": 1,
+            "attack": 1,
+            "defense": 1,
+            "focus": 1,
+            "elemFactor": [1, 1, 1.5, 0.5]
+        }
+    },
+    "credit": 0,
+    "exp": 1000,
+    "maxSp": 0,
+    "enduranceScale": 1,
+    "healDropRate": 0,
+    "boss": false,
+    "bossOrder": 0,
+    "headIdx": 4,
+    "padding": {
+        "x": 2,
+        "y": 2
+    },
+    "material": "ORGANIC",
+    "aiGroup": "",
+    "aiLearnType": "REGULAR",
+    "itemDrops": [],
+    "targetDetect": {
+        "detectDistance": 120,
+        "loseDistance": 320,
+        "notifyNeighbourRadius": 100
+    },
+    "hpBreaks": [],
+    "size": {
+        "x": 16,
+        "y": 16,
+        "z": 24
+    },
+    "anims": "player",
+    "defaultState": "DEFAULT",
+    "walkConfigs": {
+        "normal": {
+            "walkAnims": "normal"
+        }
+    },
+    "_wm": null,
+    "walkAnims": "normal",
+    "weight": 100,
+    "maxVel": 180,
+    "jumpingEnabled": true,
+    "shadow": 16,
+    "hitStable": "LIGHT",
+    "faceToTarget": true,
+    "stunEscapeTime": 1.5,
+    "DOCTYPE": "ENEMY",
+    "trackers": {
+        "move": {
+            "target": 5,
+            "initRandom": 0,
+            "resetRandom": 0.3,
+            "noStateReset": false,
+            "type": "TIME"
+        }
+    },
+    "states": {
+        "DEFAULT": { 
+            "choices": []
+        }
+    },
+    "proxies": { },
+    "actions": {
+        "actions": {
+            "Idle": [{
+                "value": true,
+                "type": "FACE_TO_TARGET"
+            }]
+        }
+    },
+    "reactions": { }
+}

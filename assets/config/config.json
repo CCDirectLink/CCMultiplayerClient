@@ -1,0 +1,7 @@
+{
+	"server": {
+		"hostname": "localhost",
+		"port": 1423,
+		"type": "http"
+	}
+}
