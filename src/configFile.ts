@@ -1,7 +1,5 @@
-interface IConfigFile {
-    server: {
-        hostname: string,
-        port: number,
-        type: string,
-    };
+import { IServer } from './server';
+
+export interface IConfigFile {
+    servers: IServer[];
 }

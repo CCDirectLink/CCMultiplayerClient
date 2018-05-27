@@ -1,4 +1,5 @@
 import { Multiplayer } from '../multiplayer';
+import { IServer } from '../server';
 
 export class SocketIoConnector implements IConnection {
     private readonly PATH = 'socket.io/socket.io.js';
@@ -7,9 +8,9 @@ export class SocketIoConnector implements IConnection {
     private address: string;
     private socket!: SocketIOClient.Socket;
 
-    constructor(main: Multiplayer) {
+    constructor(main: Multiplayer, server: IServer) {
         this.main = main;
-        this.address = this.main.config.type + '://' + this.main.config.hostname + ':' + this.main.config.port + '/';
+        this.address = server.type + '://' + server.hostname + ':' + server.port + '/';
     }
 
     public async load(): Promise<void> {

@@ -1,11 +1,11 @@
+import { IConfigFile } from './configFile';
 import { SocketIoConnector } from './connectors/socketIOConnector';
 import { Multiplayer } from './multiplayer';
+import { IServer } from './server';
 
 export class MultiplayerConfig {
     public modPath: string;
-    public hostname = 'localhost';
-    public port = 1423;
-    public type = 'http';
+    public servers: IServer[] = [];
 
     private readonly CONNECTORS: {[type: string]: any} = {
         http: SocketIoConnector,
@@ -22,19 +22,18 @@ export class MultiplayerConfig {
     public async load(): Promise<void> {
         await new Promise<void>((resolve, rejected) => {
             simplify.resources.loadJSON(this.configPath, (data: IConfigFile) => {
-                this.hostname = data.server.hostname;
-                this.port = data.server.port;
-                this.type = data.server.type;
+                this.servers = data.servers;
 
                 resolve();
             });
         });
     }
 
-    public getConnection(main: Multiplayer): IConnection {
+    public getConnection(main: Multiplayer, index: number): IConnection {
+        const server = this.servers[index];
         for (const type in this.CONNECTORS) {
-            if (type === this.type) {
-                return new this.CONNECTORS[type](main);
+            if (type === server.type) {
+                return new this.CONNECTORS[type](main, server);
             }
         }
         throw new Error('No connector found');

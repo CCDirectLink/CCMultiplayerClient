@@ -52,13 +52,21 @@ declare namespace cc {
             currentAnimation: string;
             currentState: string;
             systemHasFocusLost: string;
+            activate: string;
         }
     }
 
     interface sc {
         EnemyType: ccsc.EnemyType;
+        ButtonListBox: sc.ButtonListBox;
+        SaveSlotButton: sc.SaveSlotButton;
+        varNames: ccsc.varNames;
     }
     namespace ccsc {
+        interface varNames {
+            init: string;
+            autoSlotMiss: string;
+        }
         interface EnemyType {
             new (name: string): sc.EnemyType;
         }

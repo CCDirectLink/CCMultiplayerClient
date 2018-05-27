@@ -142,4 +142,15 @@ declare namespace sc {
     interface EnemyType {
         load(callback?: () => void): void;
     }
+
+    interface SaveSlotButton {
+        [key: string]: any;
+
+        new (save?: any, index?: number): SaveSlotButton;
+    }
+    interface ButtonListBox {
+        [key: string]: any;
+
+        clear(): void;
+    }
 }

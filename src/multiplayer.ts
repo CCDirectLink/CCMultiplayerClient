@@ -24,6 +24,7 @@ import { OnPlayerAnimationListener } from './listeners/game/onPlayerAnimation';
 import { OnPlayerMoveListener } from './listeners/game/onPlayerMove';
 import { OnTeleportListener } from './listeners/game/onTeleport';
 import { PlayerListener } from './listeners/game/playerListener';
+import { LoadScreenHook } from './loadScreenHook';
 import { IMultiplayerEntity } from './mpEntity';
 import { IPlayer } from './player';
 
@@ -38,10 +39,12 @@ export class Multiplayer {
 
     public entities: IMultiplayerEntity[] = [];
 
+    private loadScreen!: () => void;
     private startGame!: () => void;
     private connecting = false;
     private nextEID = 1;
     private entitySpawnListener!: OnEntitySpawnListener;
+    private loadScreenHook = new LoadScreenHook();
 
     constructor(config?: MultiplayerConfig) {
         if (config) {
@@ -53,7 +56,10 @@ export class Multiplayer {
 
     public async load(): Promise<void> {
         await this.config.load();
-        this.connection = this.config.getConnection(this);
+    }
+
+    public async loadConnection(index: number): Promise<void> {
+        this.connection = this.config.getConnection(this, index);
         await this.connection.load();
     }
 
@@ -69,9 +75,17 @@ export class Multiplayer {
 
         this.connecting = true;
 
+        const serverNumber = await this.loadScreenHook.displayServers(
+            this.config.servers.map((server) => server.hostname),
+            this.loadScreen);
+
+        await this.loadConnection(serverNumber);
+
         if (!this.connection.isOpen()) {
             console.log('[multiplayer] Connecting..');
-            await this.connection.open(this.config.hostname, this.config.port, this.config.type);
+            await this.connection.open(this.config.servers[serverNumber].hostname,
+                                       this.config.servers[serverNumber].port,
+                                       this.config.servers[serverNumber].type);
         }
 
         this.connecting = false;
@@ -160,7 +174,8 @@ export class Multiplayer {
         // buttons.splice(2, 2);
         // buttons[2].a.g.y = 80;
         buttons[2][cc.ig.GUI.renameTextButton]('Connect', true);
-        this.startGame = buttons[2][cc.ig.GUI.callbackFunction];
+        this.startGame = buttons[0][cc.ig.GUI.callbackFunction];
+        this.loadScreen = buttons[2][cc.ig.GUI.callbackFunction];
         buttons[2][cc.ig.GUI.callbackFunction] = this.startConnect.bind(this);
     }
 
@@ -228,9 +243,10 @@ export class Multiplayer {
         this.connect()
             .then(() => {
                 console.log('[multiplayer] Connected');
-                this.startGame();
+                // this.startGame();
             })
             .catch((err: any) => {
+                console.log(err.stack);
                 console.error(err);
                 this.connecting = false;
             });
