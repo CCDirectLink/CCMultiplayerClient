@@ -4,6 +4,7 @@ declare const sc: sc;
 interface ig {
     ready: boolean;
     system: ig.System;
+    platform: number;
 }
 
 interface sc {

@@ -170,13 +170,16 @@ export class Multiplayer {
     }
 
     private initializeGUI(): void {
-        const buttons = simplify.getInnerGui(cc.ig.GUI.menues[15].children[2])[cc.ig.varNames.titleScreenButtons];
-        // buttons.splice(2, 2);
+        const buttonNumber = ig.platform === 1 ? 2 : 1;
+
+        const buttons = simplify.getInnerGui(cc.ig.GUI.menues[15].children[2])
+                            [cc.ig.varNames.titleScreenButtons];
+        // buttons.splice(buttonNumber, 2);
         // buttons[2].a.g.y = 80;
-        buttons[2][cc.ig.GUI.renameTextButton]('Connect', true);
+        buttons[buttonNumber][cc.ig.GUI.renameTextButton]('Connect', true);
         this.startGame = buttons[0][cc.ig.GUI.callbackFunction];
         this.loadScreen = buttons[2][cc.ig.GUI.callbackFunction];
-        buttons[2][cc.ig.GUI.callbackFunction] = this.startConnect.bind(this);
+        buttons[buttonNumber][cc.ig.GUI.callbackFunction] = this.startConnect.bind(this);
     }
 
     private initializeListeners(): void {
