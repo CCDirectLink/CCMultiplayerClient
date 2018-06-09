@@ -78,7 +78,7 @@ declare namespace ig {
 
     }
     interface Proxy {
-
+        data: any;
     }
     interface Gui {
         [key: string]: any;

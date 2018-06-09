@@ -1,3 +1,4 @@
+import { IBallInfo } from '../../ballInfo';
 import { Multiplayer } from '../../multiplayer';
 
 export class OnEntitySpawnListener {
@@ -39,9 +40,15 @@ export class OnEntitySpawnListener {
             return cc.ig.gameMain.spawnEntity(type, x, y, z, settings, showAppearEffects);
         }
 
-        /*if (type === cc.ig.entityList.Ball) {
-            console.log(settings);
-        }*/
+        if (type === cc.ig.entityList.Ball) {
+            const ballSettings = this.filterBall(settings);
+            if (ballSettings) {
+                this.main.connection.throwBall(ballSettings);
+            } else {
+                console.warn('Could not find type of ball. Maybe something else threw the ball?');
+            }
+            return cc.ig.gameMain.spawnEntity(type, x, y, z, settings, showAppearEffects);
+        }
 
         let realType: string | undefined;
         if (typeof type === 'string') {
@@ -93,5 +100,28 @@ export class OnEntitySpawnListener {
         }
 
         return entity;
+    }
+
+    private filterBall(settings: {
+        ballInfo: any
+        combatant: ig.Entity,
+        dir: ig.Vector2,
+        party: number,
+    }): IBallInfo | null {
+        const player = cc.ig.playerInstance();
+        const proxies = simplify.getEntityProxies(player);
+
+        for (const name in proxies) {
+            if (proxies.hasOwnProperty(name) && proxies[name].data === settings.ballInfo) {
+                return {
+                    ballInfo: name,
+                    combatant: settings.combatant === null ? null : settings.combatant.multiplayerId,
+                    dir: settings.dir,
+                    party: settings.party,
+                };
+            }
+        }
+
+        return null;
     }
 }

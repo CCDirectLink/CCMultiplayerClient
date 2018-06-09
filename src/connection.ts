@@ -1,4 +1,6 @@
-interface IConnection {
+import { IBallInfo } from './ballInfo';
+
+export interface IConnection {
     load(): Promise<void>;
 
     open(hostname: string, port: number, type?: string): Promise<void>;
@@ -15,6 +17,8 @@ interface IConnection {
     registerEntity(id: number, type: string, pos: ig.Vector3, settings: object): void;
     killEntity(id: number): void;
 
+    throwBall(ballInfo: IBallInfo): void;
+
     updateEntityPosition(id: number, pos: ig.Vector3): void;
     updateEntityAnimation(id: number, face: ig.Vector2, anim: string): void;
     updateEntityHealth(id: number, health: number): void;
@@ -29,6 +33,9 @@ interface IConnection {
         (player: string, face: ig.Vector2, anim: string) => void): void;
     onUpdateAnimationTimer(callback:
         (player: string, timer: number) => void): void;
+
+    onThrowBall(callback:
+        (ballInfo: IBallInfo) => void): void;
 
     onRegisterEntity(callback:
         (id: number, type: string, pos: ig.Vector3, settings: object) => void): void;

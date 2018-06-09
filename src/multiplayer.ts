@@ -1,4 +1,5 @@
 import { MultiplayerConfig } from './config';
+import { IConnection } from './connection';
 import { IEntityDefinition } from './entityDefinition';
 import { OnKillEntityListener } from './listeners/connection/onKillEntity';
 import { OnPlayerChangeMapListener } from './listeners/connection/onPlayerChangeMap';

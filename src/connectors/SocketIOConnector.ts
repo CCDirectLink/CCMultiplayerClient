@@ -1,3 +1,5 @@
+import { IBallInfo } from '../ballInfo';
+import { IConnection } from '../connection';
 import { Multiplayer } from '../multiplayer';
 import { IServer } from '../server';
 
@@ -87,6 +89,10 @@ export class SocketIoConnector implements IConnection {
         this.socket.emit('killEntity', {id});
     }
 
+    public throwBall(ballInfo: IBallInfo): void {
+        this.socket.emit('throwBall', ballInfo);
+    }
+
     public updateEntityPosition(id: number, pos: ig.Vector3): void {
         this.socket.emit('updateEntityPosition', {id, pos});
     }
@@ -122,6 +128,11 @@ export class SocketIoConnector implements IConnection {
     public onUpdateAnimationTimer(callback: (player: string, timer: number) => void): void {
         this.socket.on('updateAnimationTimer', (data: any) => {
             callback(data.player, data.timer);
+        });
+    }
+    public onThrowBall(callback: (ballInfo: IBallInfo) => void): void {
+        this.socket.on('throwBall', (data: IBallInfo) => {
+            callback(data);
         });
     }
     public onRegisterEntity(callback: (id: number, type: string, pos: ig.Vector3, settings: object) => void): void {
