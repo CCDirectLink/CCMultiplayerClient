@@ -112,7 +112,7 @@ export class SocketIoConnector implements IConnection {
     public onPlayerChangeMap(callback:
         (player: string, enters: boolean, position: ig.Vector3, map: string, marker: string | null) => void): void {
         this.socket.on('onPlayerChangeMap', (data: any) => {
-            callback(data.player, data.enters, data.position, data.map, data.market);
+            callback(data.player, data.enters, data.position, data.map, data.marker);
         });
     }
     public onUpdatePostion(callback: (player: string, pos: ig.Vector3) => void): void {
