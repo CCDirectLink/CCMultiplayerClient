@@ -54,6 +54,7 @@ declare namespace cc {
             currentState: string;
             systemHasFocusLost: string;
             activate: string;
+            proxies: string;
         }
     }
 

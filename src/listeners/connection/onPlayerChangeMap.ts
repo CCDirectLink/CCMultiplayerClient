@@ -30,6 +30,7 @@ export class OnPlayerChangeMapListener {
                             },
                             mapId: 233,
                         });
+                        entity[cc.ig.varNames.proxies] = simplify.getEntityProxies(cc.ig.playerInstance());
                         this.main.players[player] = {name: player,
                                                     position: {x: position.x, y: position.y, z: position.z},
                                                     entity} as IPlayer;

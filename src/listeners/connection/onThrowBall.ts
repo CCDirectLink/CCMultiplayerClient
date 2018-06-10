@@ -20,13 +20,7 @@ export class OnThrownBallListener {
             return;
         }
 
-        const proxy = this.resolveProxy(entity, ballInfo.ballInfo)
-                        || this.resolveProxy(cc.ig.playerInstance(), ballInfo.ballInfo);
-        if (!proxy) {
-            return;
-        }
-
-        const actonStep = new cc.ig.combatActions.SHOOT_PROXY({ proxy: proxy.data, dir: ballInfo.dir });
+        const actonStep = new cc.ig.combatActions.SHOOT_PROXY({ proxy: ballInfo.ballInfo, dir: ballInfo.dir });
         simplify.runAction(actonStep, entity);
     }
 
@@ -49,9 +43,5 @@ export class OnThrownBallListener {
         }
 
         throw new Error('Malformed data in ballInfo.combatant received!');
-    }
-
-    private resolveProxy(entity: ig.Entity, name: string): ig.Proxy | undefined {
-        return simplify.getEntityProxies(entity)[name];
     }
 }
