@@ -26,6 +26,10 @@ export class OnUpdateEntityTargetListener {
             return console.warn('Could not find entity ' + target);
         }
 
+        if (!this.main.entities[id]) {
+            return;
+        }
+
         simplify.setEntityTarget(this.main.entities[id], entity);
         this.main.entities[id].lastTarget = this.main.entities[id].target; // In order to avoid sending an target update
     }
