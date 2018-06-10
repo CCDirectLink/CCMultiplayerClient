@@ -36,6 +36,7 @@ declare namespace cc {
         baseEntity: ig.Entity;
         entityList: ig.EntityList;
         events: ig.EventList;
+        combatActions: ig.CombatActions;
         TeleportPosition: ig.TeleportPosition;
         
         playerInstance(): ig.Player;

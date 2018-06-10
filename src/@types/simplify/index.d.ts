@@ -16,7 +16,7 @@ interface simplify {
     setAnimation(entity: ig.Entity, value: string | object): void;
 
     runAction(action: ig.ActionStep, ...args: any[]): any;
-    getEntityProxies(entity: ig.Entity): ig.Proxy[];
+    getEntityProxies(entity: ig.Entity): { [key: string]: ig.Proxy | undefined };
     killEntity(entity: ig.Entity, levelChange?: any): void;
     setEntityTarget(entity: ig.Entity, target: ig.TargetableEntity | null): void;
     getProxyAction(action: any): any;

@@ -72,13 +72,19 @@ declare namespace ig {
         DO_ACTION: Events.DO_ACTION;
         SET_ENEMY_STATE: Events.SET_ENEMY_STATE;
     }
+    interface CombatActions {
+        SHOOT_PROXY: Actions.SHOOT_PROXY;
+    }
 
 
     interface ActionStep {
 
     }
     interface Proxy {
-        data: any;
+        data: ProxyData;
+    }
+    interface ProxyData {
+
     }
     interface Gui {
         [key: string]: any;
@@ -135,6 +141,11 @@ declare namespace ig {
         }
         interface SET_ENEMY_STATE extends Event {
             new (settings: {enemy: ig.Enemy, enemyState: string}): SET_ENEMY_STATE;
+        }
+    }
+    namespace Actions {
+        interface SHOOT_PROXY extends ActionStep {
+            new (settings: {proxy: ProxyData, offset?: number, align?: string, dir: Vector2, posType?: string}): SHOOT_PROXY;
         }
     }
 }

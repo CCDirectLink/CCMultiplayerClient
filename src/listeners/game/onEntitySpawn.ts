@@ -43,7 +43,10 @@ export class OnEntitySpawnListener {
         if (type === cc.ig.entityList.Ball) {
             const ballSettings = this.filterBall(settings);
             if (ballSettings) {
-                this.main.connection.throwBall(ballSettings);
+                if (typeof ballSettings.combatant !== 'string'
+                    && settings.combatant.name === null) { // Don't resend other player's balls
+                    this.main.connection.throwBall(ballSettings);
+                }
             } else {
                 console.warn('Could not find type of ball. Maybe something else threw the ball?');
             }
@@ -112,13 +115,16 @@ export class OnEntitySpawnListener {
         const proxies = simplify.getEntityProxies(player);
 
         for (const name in proxies) {
-            if (proxies.hasOwnProperty(name) && proxies[name].data === settings.ballInfo) {
-                return {
-                    ballInfo: name,
-                    combatant: settings.combatant === null ? null : settings.combatant.multiplayerId,
-                    dir: settings.dir,
-                    party: settings.party,
-                };
+            if (proxies.hasOwnProperty(name)) {
+                const proxy = proxies[name];
+                if (proxy !== undefined && proxy.data === settings.ballInfo) {
+                    return {
+                        ballInfo: name,
+                        combatant: settings.combatant === null ? null : settings.combatant.multiplayerId,
+                        dir: settings.dir,
+                        party: settings.party,
+                    };
+                }
             }
         }
 
