@@ -109,6 +109,12 @@ export class SocketIoConnector implements IConnection {
         this.socket.emit('updateEntityTarget', {id, target});
     }
 
+    public onSetHost(callback: (isHost: boolean) => void): void {
+        this.socket.on('setHost', (isHost: boolean) => {
+            callback(isHost);
+        });
+    }
+
     public onPlayerChangeMap(callback:
         (player: string, enters: boolean, position: ig.Vector3, map: string, marker: string | null) => void): void {
         this.socket.on('onPlayerChangeMap', (data: any) => {

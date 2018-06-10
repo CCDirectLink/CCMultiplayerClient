@@ -4,6 +4,7 @@ import { IEntityDefinition } from './entityDefinition';
 import { OnKillEntityListener } from './listeners/connection/onKillEntity';
 import { OnPlayerChangeMapListener } from './listeners/connection/onPlayerChangeMap';
 import { OnRegisterEntityListener } from './listeners/connection/onRegisterEntity';
+import { OnSetHostListener } from './listeners/connection/onSetHost';
 import { OnThrownBallListener } from './listeners/connection/onThrowBall';
 import { OnUpdateAnimationListener } from './listeners/connection/onUpdateAnimation';
 import { OnUpdateAnimationTimerListener } from './listeners/connection/onUpdateAnimationTimer';
@@ -219,6 +220,7 @@ export class Multiplayer {
 
         this.entitySpawnListener = spawn;
 
+        const setHost = new OnSetHostListener(this);
         const playerChange = new OnPlayerChangeMapListener(this);
         const updatePosition = new OnUpdatePositionListener(this);
         const updateAnim = new OnUpdateAnimationListener(this);
@@ -232,6 +234,7 @@ export class Multiplayer {
         const entityTarget = new OnUpdateEntityTargetListener(this);
         const entityHealth = new OnUpdateEntityHealthListener(this);
 
+        setHost.register();
         playerChange.register();
         updatePosition.register();
         updateAnim.register();

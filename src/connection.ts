@@ -25,6 +25,9 @@ export interface IConnection {
     updateEntityState(id: number, state: string): void;
     updateEntityTarget(id: number, target: string | number | null): void;
 
+    onSetHost(callback:
+        (isHost: boolean) => void): void;
+
     onPlayerChangeMap(callback:
         (player: string, enters: boolean, position: ig.Vector3, map: string, marker: string | null) => void): void;
     onUpdatePostion(callback:
