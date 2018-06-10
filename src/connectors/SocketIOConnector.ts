@@ -10,6 +10,11 @@ export class SocketIoConnector implements IConnection {
     private address: string;
     private socket!: SocketIOClient.Socket;
 
+    private username?: string;
+    private map?: string;
+    private marker?: string | null;
+    private setHost?: (isHost: boolean) => void;
+
     constructor(main: Multiplayer, server: IServer) {
         this.main = main;
         this.address = server.type + '://' + server.hostname + ':' + server.port + '/';
@@ -25,6 +30,19 @@ export class SocketIoConnector implements IConnection {
 
     public async open(hostname: string, port: number, type?: string): Promise<void> {
         this.socket = io(type + '://' + hostname + ':' + port + '/');
+
+        this.socket.on('reconnect', async () => {
+            if (this.username && this.setHost) {
+                const result = await this.identify(this.username);
+                if (result.success) {
+                    this.setHost(result.host);
+
+                    if (this.map && this.marker) {
+                        this.changeMap(this.map, this.marker);
+                    }
+                }
+            }
+        });
 
         await new Promise((resolve, reject) => {
             if (!this.socket) {
@@ -56,6 +74,8 @@ export class SocketIoConnector implements IConnection {
     public identify(username: string): Promise<IIdentifyResult> {
         return new Promise<IIdentifyResult>((resolve, reject) => {
             this.socket.once('identified', (data: {success: boolean, isHost: boolean}) => {
+                this.username = username;
+
                 if (data.success) {
                     resolve({success: data.success, host: data.isHost});
                 } else {
@@ -67,6 +87,8 @@ export class SocketIoConnector implements IConnection {
         });
     }
     public changeMap(name: string, marker: string | null): void {
+        this.map = name;
+        this.marker = marker;
         this.socket.emit('changeMap', {name, marker});
     }
     public updatePersition(position: ig.Vector3): void {
@@ -110,6 +132,7 @@ export class SocketIoConnector implements IConnection {
     }
 
     public onSetHost(callback: (isHost: boolean) => void): void {
+        this.setHost = callback;
         this.socket.on('setHost', (isHost: boolean) => {
             callback(isHost);
         });
