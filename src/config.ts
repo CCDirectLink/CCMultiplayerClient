@@ -16,7 +16,7 @@ export class MultiplayerConfig {
     private configPath = 'config/config.json';
 
     constructor(configPath?: string) {
-        this.modPath = simplify.getMod('multiplayer').getBaseDirectory();
+        this.modPath = simplify.getMod('multiplayer').baseDirectory;
         this.configPath = this.modPath + (configPath || this.configPath);
     }
 

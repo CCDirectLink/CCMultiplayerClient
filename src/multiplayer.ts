@@ -176,7 +176,7 @@ export class Multiplayer {
         const buttonNumber = ig.platform === 1 ? 2 : 1;
 
         const buttons = simplify.getInnerGui(cc.ig.GUI.menues[15].children[2])
-                            [cc.ig.varNames.titleScreenButtons];
+                            [getEntry('buttons')];
         // buttons.splice(buttonNumber, 2);
         // buttons[2].a.g.y = 80;
         buttons[buttonNumber][cc.ig.GUI.renameTextButton]('Connect', true);
