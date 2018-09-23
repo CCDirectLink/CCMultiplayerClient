@@ -1,4 +1,9 @@
 {
 	"name": "multiplayer",
-	"main": "dist/mod.js"
+	"main": "mod.js",
+	"version": "0.0.4",
+	"dependencies": {
+		"ccloader": "^2.0.0",
+		"crosscode": "^1.0.0"
+	}
 }
