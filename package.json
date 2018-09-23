@@ -15,6 +15,7 @@
     "@types/socket.io-client": "^1.4.32",
     "@types/webpack": "^4.4.9",
     "babel-polyfill": "^6.26.0",
+    "copy-webpack-plugin": "^4.5.2",
     "ts-loader": "^4.4.2",
     "ts-node": "^6.2.0",
     "tslint": "^5.11.0",

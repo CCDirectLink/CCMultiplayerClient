@@ -1,5 +1,6 @@
 const path = require('path');
 const webpack = require('webpack');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 /**
  * @type {webpack.Configuration}
@@ -7,6 +8,13 @@ const webpack = require('webpack');
 const config = {
     mode: 'production',
     entry: ['core-js/fn/promise', './src/main.ts'],
+    plugins: [
+        new CopyWebpackPlugin([{
+            context: 'assets/',
+            from: '*/**',
+            to: '[path][name].[ext]'
+        }])
+    ],
     module: {
         rules: [{
             test: /\.tsx?$/,
