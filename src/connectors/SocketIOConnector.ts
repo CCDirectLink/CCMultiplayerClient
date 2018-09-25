@@ -75,8 +75,10 @@ export class SocketIoConnector implements IConnection {
 
     public identify(username: string): Promise<IIdentifyResult> {
         return new Promise<IIdentifyResult>((resolve, reject) => {
-            this.socket.once('identified', (data: {success: boolean, isHost: boolean}) => {
-                this.username = username;
+            this.socket.once('handshakeResponse', (data: {success: boolean, username: string, isHost: boolean}) => {
+				console.log('Received handshake from server:');
+				console.log(data);
+                this.username = data.username;
 
                 if (data.success) {
                     resolve({success: data.success, host: data.isHost});
@@ -85,13 +87,17 @@ export class SocketIoConnector implements IConnection {
                 }
             });
 
-            this.socket.emit('identify', username);
+            this.socket.emit('handshake', {
+                username: username,
+                version: "//FIXME",
+                client: "multiplayer"
+            });
         });
     }
     public changeMap(name: string, marker: string | null): void {
         this.map = name;
         this.marker = marker;
-        this.socket.emit('changeMap', {name, marker});
+        this.socket.emit('changeMap', {name: name, marker: marker});
     }
     public updatePersition(position: ig.Vector3): void {
         this.socket.emit('updatePosition', position);
