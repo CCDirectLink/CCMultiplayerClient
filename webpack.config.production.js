@@ -11,7 +11,7 @@ const config = {
     plugins: [
         new CopyWebpackPlugin([{
             context: 'assets/',
-            from: '*/**',
+            from: '**',
             to: '[path][name].[ext]'
         }])
     ],
