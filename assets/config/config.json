@@ -1,7 +1,11 @@
 {
-	"server": {
+	"servers": [{
 		"hostname": "localhost",
 		"port": 1423,
 		"type": "http"
-	}
+	},{
+		"hostname": "ccmultiplayerserver.herokuapp.com",
+		"port": 80,
+		"type": "http"
+	}]
 }
