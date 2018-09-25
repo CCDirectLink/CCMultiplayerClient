@@ -29,7 +29,9 @@ export class SocketIoConnector implements IConnection {
     }
 
     public async open(hostname: string, port: number, type?: string): Promise<void> {
-        this.socket = io(type + '://' + hostname + ':' + port + '/');
+        this.socket = io(type + '://' + hostname + ':' + port + '/', {
+			transports: ['websocket']
+		});
 
         this.socket.on('reconnect', async () => {
             if (this.username && this.setHost) {
