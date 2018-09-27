@@ -81,6 +81,9 @@ export class Multiplayer {
         const serverNumber = await this.loadScreenHook.displayServers(
             this.config.servers.map((server) => server.hostname),
             this.loadScreen);
+			
+		// Go back to previous sub state (out of the menu).
+		(<any>sc).q.I_a(); // sc.model.enterPrevSubState
 
         await this.loadConnection(serverNumber);
 
@@ -111,6 +114,12 @@ export class Multiplayer {
             console.log('[multiplayer] This user is the host');
             this.host = true;
         }
+
+		console.log('[multiplayer] Loading map: ' + result.mapName);
+		
+		// Set a map via the load level on game start variable.
+		// Thank you CrossCode Developers for including this!
+		(<any>window).LOAD_LEVEL_ON_GAME_START = result.mapName;
     }
 
     public registerEntity(entity: ig.Entity): number {
@@ -249,11 +258,11 @@ export class Multiplayer {
         entityHealth.register();
     }
 
-    private startConnect(): void {
+    private startConnect(): void {		
         this.connect()
             .then(() => {
                 console.log('[multiplayer] Connected');
-                // this.startGame();
+				this.launchGame();
             })
             .catch((err: any) => {
                 console.log(err.stack);
@@ -261,6 +270,16 @@ export class Multiplayer {
                 this.connecting = false;
             });
     }
+	
+	private launchGame(): void {
+
+		// Remove title screen interact.
+		const buttonInteract = simplify.getInnerGui(cc.ig.GUI.menues[15].children[2]).Z; // TODO Resolve buttonInteract
+		cc.ig.interact.removeEntry(buttonInteract);
+		
+		cc.ig.bgm.clear('MEDIUM_OUT'); // Clear BGM
+		cc.ig.gameMain.start(); // Start the game in story mode.
+	}
 
     private showLogin(): Promise<string> {
         return new Promise((resolve, reject) => {
@@ -298,4 +317,5 @@ export class Multiplayer {
     private disableFocus() {
         ig.system[cc.ig.varNames.systemHasFocusLost] = () => false;
     }
+	
 }

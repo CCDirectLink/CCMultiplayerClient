@@ -44,6 +44,9 @@ declare namespace cc {
         TeleportPosition: ig.TeleportPosition;
         
         playerInstance(): ig.Player;
+		
+		bgm: ig.Bgm;
+		interact: ig.Interact;
     }
     namespace ccig {
         interface varNames {

@@ -75,13 +75,13 @@ export class SocketIoConnector implements IConnection {
 
     public identify(username: string): Promise<IIdentifyResult> {
         return new Promise<IIdentifyResult>((resolve, reject) => {
-            this.socket.once('handshakeResponse', (data: {success: boolean, username: string, isHost: boolean}) => {
+            this.socket.once('handshakeResponse', (data: {success: boolean, username: string, host: boolean, mapName: string}) => {
 				console.log('Received handshake from server:');
 				console.log(data);
                 this.username = data.username;
 
                 if (data.success) {
-                    resolve({success: data.success, host: data.isHost});
+                    resolve({success: data.success, host: data.host, mapName: data.mapName});
                 } else {
                     reject(data);
                 }
@@ -89,7 +89,7 @@ export class SocketIoConnector implements IConnection {
 
             this.socket.emit('handshake', {
                 username: username,
-                version: "//FIXME",
+                version: sc.version.toString(),
                 client: "multiplayer"
             });
         });

@@ -8,6 +8,7 @@ interface ig {
 }
 
 interface sc {
+	version: sc.version;
 }
 
 declare namespace ig {
@@ -28,6 +29,15 @@ declare namespace ig {
         setFocusLost(): void;
         addFocusListener(listener: () => void): void;
     }
+	
+	interface Bgm {
+		clear(type: string): void;
+	}
+	
+	interface Interact {
+		removeEntry(entry: any): void;
+		addEntry(entry: any): void;
+	}
 
     interface EntityType {
         
@@ -151,6 +161,10 @@ declare namespace ig {
 }
 
 declare namespace sc {
+	interface Version {
+		toString(): string;
+	}
+	
     interface EnemyType {
         load(callback?: () => void): void;
     }
