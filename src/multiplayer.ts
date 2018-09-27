@@ -61,9 +61,8 @@ export class Multiplayer {
         await this.config.load();
     }
 
-    public async loadConnection(index: number): Promise<void> {
+    public async waitForServerSelection(index: number): Promise<void> {
         this.connection = this.config.getConnection(this, index);
-        await this.connection.load();
     }
 
     public initialize(): void {
@@ -85,7 +84,11 @@ export class Multiplayer {
 		// Go back to previous sub state (out of the menu).
 		(<any>sc).q.I_a(); // sc.model.enterPrevSubState
 
-        await this.loadConnection(serverNumber);
+        await this.waitForServerSelection(serverNumber);
+
+		const username = await this.showLogin();
+
+		await this.connection.load();
 
         if (!this.connection.isOpen()) {
             console.log('[multiplayer] Connecting..');
@@ -102,7 +105,6 @@ export class Multiplayer {
 
         this.initializeListeners();
 
-        const username = await this.showLogin();
         console.log('[multiplayer] Logging in as ' + username);
         const result = await this.connection.identify(username);
 
