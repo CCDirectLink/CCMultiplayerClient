@@ -44,7 +44,6 @@ export class Multiplayer {
 
     private loadScreen!: () => void;
     private startGame!: () => void;
-    private connecting = false;
     private nextEID = 1;
     private entitySpawnListener!: OnEntitySpawnListener;
     private loadScreenHook = new LoadScreenHook();
@@ -71,12 +70,6 @@ export class Multiplayer {
     }
 
     public async connect(): Promise<void> {
-        if (this.connecting) {
-            throw new Error('[multiplayer] Already connecting');
-        }
-
-        this.connecting = true;
-
         const serverNumber = await this.loadScreenHook.displayServers(
             this.config.servers.map((server) => server.hostname),
             this.loadScreen);
@@ -93,14 +86,8 @@ export class Multiplayer {
         if (!this.connection.isOpen()) {
             console.log('[multiplayer] Connecting..');
             await this.connection.open(this.config.servers[serverNumber].hostname,
-                                       this.config.servers[serverNumber].port,
-                                       this.config.servers[serverNumber].type);
-        }
-
-        this.connecting = false;
-
-        if (!this.connection.isOpen()) {
-            throw new Error('[multiplyer] The connector lied about beeing connected :(');
+                this.config.servers[serverNumber].port,
+                this.config.servers[serverNumber].type);
         }
 
         this.initializeListeners();
@@ -267,17 +254,16 @@ export class Multiplayer {
                 this.launchGame();
             })
             .catch((err: any) => {
-                console.log(err.stack);
+                console.log(err);
                 console.error(err);
-                this.connecting = false;
             });
     }
 
     private launchGame(): void {
         // Remove title screen interact.
         const buttonInteract = simplify.getInnerGui(cc.ig.GUI.menues[15].children[2]).Z; // TODO Resolve buttonInteract
-        cc.ig.interact.removeEntry(buttonInteract);
 
+        cc.ig.interact.removeEntry(buttonInteract);
         cc.ig.bgm.clear('MEDIUM_OUT'); // Clear BGM
         cc.ig.gameMain.start(); // Start the game in story mode.
     }

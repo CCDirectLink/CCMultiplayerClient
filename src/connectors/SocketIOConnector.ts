@@ -30,8 +30,8 @@ export class SocketIoConnector implements IConnection {
 
     public async open(hostname: string, port: number, type?: string): Promise<void> {
         this.socket = io(type + '://' + hostname + ':' + port + '/', {
-			transports: ['websocket']
-		});
+            transports: ['websocket'],
+        });
 
         this.socket.on('reconnect', async () => {
             if (this.username && this.setHost) {
@@ -76,8 +76,6 @@ export class SocketIoConnector implements IConnection {
     public identify(username: string): Promise<IIdentifyResult> {
         return new Promise<IIdentifyResult>((resolve, reject) => {
             this.socket.once('handshakeResponse', (data: {success: boolean, username: string, host: boolean, mapName: string}) => {
-				console.log('Received handshake from server:');
-				console.log(data);
                 this.username = data.username;
 
                 if (data.success) {
@@ -88,16 +86,16 @@ export class SocketIoConnector implements IConnection {
             });
 
             this.socket.emit('handshake', {
-                username: username,
+                username,
                 version: sc.version.toString(),
-                client: "multiplayer"
+                client: 'multiplayer',
             });
         });
     }
     public changeMap(name: string, marker: string | null): void {
         this.map = name;
         this.marker = marker;
-        this.socket.emit('changeMap', {name: name, marker: marker});
+        this.socket.emit('changeMap', {name, marker});
     }
     public updatePersition(position: ig.Vector3): void {
         this.socket.emit('updatePosition', position);
