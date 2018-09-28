@@ -1,6 +1,6 @@
 import { IConfigFile } from './configFile';
 import { IConnection } from './connection';
-import { SocketIoConnector } from './connectors/socketIOConnector';
+import { SocketIoConnector } from './connectors/SocketIOConnector';
 import { Multiplayer } from './multiplayer';
 import { IServer } from './server';
 

@@ -2,7 +2,7 @@ declare let activeMods: Mod[];
 declare let inactiveMods: Mod[];
 declare let cc: cc;
 
-declare let getEntry: (key: string) => string
+declare let getEntry: (key: string) => string;
 
 /**
  * You should never be able to aquire an instance of this in a mod
@@ -17,7 +17,6 @@ interface Mod {
     readonly description: string | undefined;
     readonly assets: string[];
     readonly isEnabled: boolean;
-
 
     initialize(): void;
     load(cb: Function): void;
@@ -42,11 +41,11 @@ declare namespace cc {
         events: ig.EventList;
         combatActions: ig.CombatActions;
         TeleportPosition: ig.TeleportPosition;
-        
+
+        bgm: ig.Bgm;
+        interact: ig.Interact;
+
         playerInstance(): ig.Player;
-		
-		bgm: ig.Bgm;
-		interact: ig.Interact;
     }
     namespace ccig {
         interface varNames {
