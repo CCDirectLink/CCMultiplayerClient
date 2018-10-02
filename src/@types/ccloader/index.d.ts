@@ -69,6 +69,7 @@ declare namespace cc {
         ButtonListBox: sc.ButtonListBox;
         SaveSlotButton: sc.SaveSlotButton;
         varNames: ccsc.varNames;
+        playerModelInstance: ccsc.Model;
     }
     namespace ccsc {
         interface varNames {
@@ -77,6 +78,9 @@ declare namespace cc {
         }
         interface EnemyType {
             new (name: string): sc.EnemyType;
+        }
+        interface Model {
+            P_a(): void;
         }
     }
 }

@@ -75,7 +75,7 @@ export class Multiplayer {
             this.loadScreen);
 
         // Go back to previous sub state (out of the menu).
-        (sc as any).q.I_a(); // sc.model.enterPrevSubState
+        cc.sc.playerModelInstance.P_a(); // sc.model.enterPrevSubState
 
         await this.waitForServerSelection(serverNumber);
 
