@@ -75,17 +75,26 @@ export class SocketIoConnector implements IConnection {
 
     public identify(username: string): Promise<IIdentifyResult> {
         return new Promise<IIdentifyResult>((resolve, reject) => {
-            this.socket.once('identified', (data: {success: boolean, isHost: boolean}) => {
+            this.socket.once('handshakeResponse', (data: {
+                success: boolean,
+                username: string,
+                host: boolean,
+                mapName: string,
+            }) => {
                 this.username = username;
 
                 if (data.success) {
-                    resolve({success: data.success, host: data.isHost});
+                    resolve({success: data.success, host: data.host, mapName: data.mapName});
                 } else {
                     reject(data);
                 }
             });
 
-            this.socket.emit('identify', username);
+            this.socket.emit('handshake', {
+                username,
+                version: sc.version.toString(),
+                client: 'multiplayer',
+            });
         });
     }
     public changeMap(name: string, marker: string | null): void {

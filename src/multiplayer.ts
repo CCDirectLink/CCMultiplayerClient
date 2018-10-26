@@ -44,7 +44,6 @@ export class Multiplayer {
 
     private loadScreen!: () => void;
     private startGame!: () => void;
-    private connecting = false;
     private nextEID = 1;
     private entitySpawnListener!: OnEntitySpawnListener;
     private loadScreenHook = new LoadScreenHook();
@@ -61,9 +60,8 @@ export class Multiplayer {
         await this.config.load();
     }
 
-    public async loadConnection(index: number): Promise<void> {
+    public async waitForServerSelection(index: number): Promise<void> {
         this.connection = this.config.getConnection(this, index);
-        await this.connection.load();
     }
 
     public initialize(): void {
@@ -72,34 +70,28 @@ export class Multiplayer {
     }
 
     public async connect(): Promise<void> {
-        if (this.connecting) {
-            throw new Error('[multiplayer] Already connecting');
-        }
-
-        this.connecting = true;
-
         const serverNumber = await this.loadScreenHook.displayServers(
             this.config.servers.map((server) => server.hostname),
             this.loadScreen);
 
-        await this.loadConnection(serverNumber);
+        // Go back to previous sub state (out of the menu).
+        cc.sc.playerModelInstance[entries.enterPrevSubState](); // sc.model.enterPrevSubState
+
+        await this.waitForServerSelection(serverNumber);
+
+        const username = await this.showLogin();
+
+        await this.connection.load();
 
         if (!this.connection.isOpen()) {
             console.log('[multiplayer] Connecting..');
             await this.connection.open(this.config.servers[serverNumber].hostname,
-                                       this.config.servers[serverNumber].port,
-                                       this.config.servers[serverNumber].type);
-        }
-
-        this.connecting = false;
-
-        if (!this.connection.isOpen()) {
-            throw new Error('[multiplyer] The connector lied about beeing connected :(');
+                this.config.servers[serverNumber].port,
+                this.config.servers[serverNumber].type);
         }
 
         this.initializeListeners();
 
-        const username = await this.showLogin();
         console.log('[multiplayer] Logging in as ' + username);
         const result = await this.connection.identify(username);
 
@@ -111,6 +103,12 @@ export class Multiplayer {
             console.log('[multiplayer] This user is the host');
             this.host = true;
         }
+
+        console.log('[multiplayer] Loading map: ' + result.mapName);
+
+        // Set a map via the load level on game start variable.
+        // Thank you CrossCode Developers for including this!
+        LOAD_LEVEL_ON_GAME_START = result.mapName;
     }
 
     public registerEntity(entity: ig.Entity): number {
@@ -253,13 +251,20 @@ export class Multiplayer {
         this.connect()
             .then(() => {
                 console.log('[multiplayer] Connected');
-                // this.startGame();
+                this.launchGame();
             })
             .catch((err: any) => {
-                console.log(err.stack);
                 console.error(err);
-                this.connecting = false;
             });
+    }
+
+    private launchGame(): void {
+        // Remove title screen interact.
+        const buttonInteract = simplify.getInnerGui(cc.ig.GUI.menues[15].children[2]).Z; // TODO Resolve buttonInteract
+
+        cc.ig.interact.removeEntry(buttonInteract);
+        cc.ig.bgm.clear('MEDIUM_OUT'); // Clear BGM
+        cc.ig.gameMain.start(); // Start the game in story mode.
     }
 
     private showLogin(): Promise<string> {

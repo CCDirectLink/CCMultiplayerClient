@@ -1,6 +1,8 @@
 declare const ig: ig;
 declare const sc: sc;
 
+declare let LOAD_LEVEL_ON_GAME_START: string;
+
 interface ig {
     ready: boolean;
     system: ig.System;
@@ -8,6 +10,7 @@ interface ig {
 }
 
 interface sc {
+    version: sc.Version;
 }
 
 declare namespace ig {
@@ -29,8 +32,17 @@ declare namespace ig {
         addFocusListener(listener: () => void): void;
     }
 
+    interface Bgm {
+        clear(type: string): void;
+    }
+
+    interface Interact {
+        removeEntry(entry: any): void;
+        addEntry(entry: any): void;
+    }
+
     interface EntityType {
-        
+
     }
 
     interface Entity {
@@ -39,7 +51,7 @@ declare namespace ig {
 
         type: string;
         settings: any;
-        face: ig.Vector2
+        face: ig.Vector2;
     }
     interface EntityList {
         [key: string]: ig.EntityType | undefined;
@@ -76,7 +88,6 @@ declare namespace ig {
         SHOOT_PROXY: Actions.SHOOT_PROXY;
     }
 
-
     interface ActionStep {
 
     }
@@ -100,9 +111,7 @@ declare namespace ig {
     interface BaseParams {
 
     }
-    interface Font {
-        (path: string, charHeigt: number, firstChar: number): Font;
-    }
+    type Font = (path: string, charHeigt: number, firstChar: number) => Font;
     interface Vector2 {
         [key: string]: number | undefined;
 
@@ -151,16 +160,20 @@ declare namespace ig {
 }
 
 declare namespace sc {
-    interface EnemyType {
+	interface Version {
+		toString(): string;
+	}
+
+ interface EnemyType {
         load(callback?: () => void): void;
     }
 
-    interface SaveSlotButton {
+ interface SaveSlotButton {
         [key: string]: any;
 
         new (save?: any, index?: number): SaveSlotButton;
     }
-    interface ButtonListBox {
+ interface ButtonListBox {
         [key: string]: any;
 
         clear(): void;
