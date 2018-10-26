@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
-    "target": "es5",                          /* Specify ECMAScript target version: 'ES3' (default), 'ES5', 'ES2015', 'ES2016', 'ES2017','ES2018' or 'ESNEXT'. */
-    "module": "CommonJS",                     /* Specify module code generation: 'none', 'commonjs', 'amd', 'system', 'umd', 'es2015', or 'ESNext'. */
+    "target": "es2018",                          /* Specify ECMAScript target version: 'ES3' (default), 'ES5', 'ES2015', 'ES2016', 'ES2017','ES2018' or 'ESNEXT'. */
+    "module": "es2015",                     /* Specify module code generation: 'none', 'commonjs', 'amd', 'system', 'umd', 'es2015', or 'ESNext'. */
     "declaration": false,                   /* Generates corresponding '.d.ts' file. */
     "sourceMap": true,                     /* Generates corresponding '.map' file. */
     //"inlineSourceMap": true,
@@ -11,8 +11,7 @@
     "typeRoots": ["node_modules/@types", "src/@types"],                       /* List of folders to include type definitions from. */
     "watch": true,
     "lib": [
-      "es5",
-      "es2015.promise",
+      "es2018",
       "dom",
       "scripthost"
     ],

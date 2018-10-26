@@ -7,7 +7,8 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
  */
 const config = {
     mode: 'production',
-    entry: ['core-js/fn/promise', './src/main.ts'],
+    entry: './src/main.ts',
+    target: 'node-webkit',
     plugins: [
         new CopyWebpackPlugin([{
             context: 'assets/',

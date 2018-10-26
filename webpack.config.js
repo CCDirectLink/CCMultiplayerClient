@@ -7,7 +7,7 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
  */
 const config = {
     mode: 'development',
-    entry: ['core-js/fn/promise', './src/main.ts'],
+    entry: './src/main.ts',
     devtool: 'inline-source-map',
     plugins: [
         new CopyWebpackPlugin([{
@@ -21,7 +21,7 @@ const config = {
             test: /\.tsx?$/,
             use: 'ts-loader',
             exclude: /node_modules/
-        }]
+        }],
     },
     resolve: {
         extensions: ['.tsx', '.ts', '.js']
