@@ -2,6 +2,9 @@ import { IBallInfo } from '../../ballInfo';
 import { Multiplayer } from '../../multiplayer';
 
 export class OnEntitySpawnListener {
+    private unknownEntities: Array<string | ig.EntityType> = [];
+    private recursiveEntities: Array<string | ig.EntityType> = [];
+
     constructor(
         private main: Multiplayer,
     ) { }
@@ -34,6 +37,9 @@ export class OnEntitySpawnListener {
             cc.ig.entityList.OffsetParticle,
             cc.ig.entityList.RhombusParticle,
             cc.ig.entityList.HiddenSkyBlock,
+            cc.ig.entityList.Effect,
+            cc.ig.entityList.Particle,
+            cc.ig.entityList.CopyParticle,
         ];  // Static objects that never change or objects that should never be synced
 
         if (blacklist.indexOf(type) >= 0) {
@@ -53,25 +59,21 @@ export class OnEntitySpawnListener {
             return cc.ig.gameMain.spawnEntity(type, x, y, z, settings, showAppearEffects);
         }
 
-        let realType: string | undefined;
-        if (typeof type === 'string') {
-            // console.log("onEntitySpawn: ", type);
-            realType = type;
-            this.main.connection.spawnEntity(type, x, y, z, settings, showAppearEffects);
-        } else {
-            for (const t in cc.ig.entityList) {
-                if (cc.ig.entityList[t] === type) {
-                    // console.log("onEntitySpawn (type): ", t);
-                    realType = t;
-                    break;
-                }
-            }
-        }
-
         const entity = cc.ig.gameMain.spawnEntity(type, x, y, z, settings, showAppearEffects);
 
+        const realType = this.findEntityType(type);
         if (realType === undefined) {
-            console.warn('Could not resolve entity type');
+            if (this.unknownEntities.indexOf(type) === -1) {
+                console.log('Unknown entity type spawned');
+                this.unknownEntities.push(type);
+
+                for (const key in sc) {
+                    if ((sc as any)[key] === type) {
+                        console.log(`Unkown entity is of type sc.${key}`);
+                    }
+                }
+            }
+
             return entity;
         }
 
@@ -83,13 +85,20 @@ export class OnEntitySpawnListener {
 
                 // TODO: improve this (Maybe with a white/blacklist?)
                 let isRecursive = false;
-                try {
-                    JSON.stringify(settings);
-                } catch (e) {
-                    if (e.name === 'TypeError') {
-                        isRecursive = true;
-                    } else {
-                        throw e;
+
+                if (this.recursiveEntities.includes(type)) {
+                    isRecursive = true;
+                } else {
+                    try {
+                        JSON.stringify(settings);
+                    } catch (e) {
+                        if (e.name === 'TypeError') {
+                            isRecursive = true;
+                            this.recursiveEntities.push(type);
+                            console.log('Added type to recursive blacklist: ', this.findEntityType(type), type);
+                        } else {
+                            throw e;
+                        }
                     }
                 }
 
@@ -129,5 +138,17 @@ export class OnEntitySpawnListener {
         }
 
         return null;
+    }
+
+    private findEntityType(type: string | ig.EntityType): string | undefined {
+        if (typeof type === 'string') {
+            return type;
+        }
+
+        for (const t in cc.ig.entityList) {
+            if (cc.ig.entityList[t] === type) {
+                return t;
+            }
+        }
     }
 }
