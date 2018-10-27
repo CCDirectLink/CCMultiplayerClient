@@ -132,7 +132,7 @@ export class SocketIoConnector implements IConnection {
     public updateEntityAnimation(id: number, face: ig.Vector2, anim: string): void {
         this.socket.emit('updateEntityAnimation', {id, face, anim});
     }
-    public updateEntityHealth(id: number, health: number): void {
+    public updateEntityHealth(id: number | null, health: number): void {
         this.socket.emit('updateEntityHealth', {id, hp: health});
     }
     public updateEntityState(id: number, state: string): void {
@@ -205,7 +205,7 @@ export class SocketIoConnector implements IConnection {
             callback(data.id, data.target);
         });
     }
-    public onUpdateEntityHealth(callback: (id: number, health: number) => void): void {
+    public onUpdateEntityHealth(callback: (id: number | string, health: number) => void): void {
         this.socket.on('updateEntityHealth', (data: any) => {
             callback(data.id, data.hp);
         });

@@ -30,6 +30,7 @@ import { PlayerListener } from './listeners/game/playerListener';
 import { LoadScreenHook } from './loadScreenHook';
 import { IMultiplayerEntity } from './mpEntity';
 import { IPlayer } from './player';
+import { OnPlayerHealthChangeListener } from './listeners/game/onPlayerHealthChange';
 
 export class Multiplayer {
     public futureEntities: IEntityDefinition[] = [];
@@ -43,7 +44,6 @@ export class Multiplayer {
     public entities: IMultiplayerEntity[] = [];
 
     private loadScreen!: () => void;
-    private startGame!: () => void;
     private nextEID = 1;
     private entitySpawnListener!: OnEntitySpawnListener;
     private loadScreenHook = new LoadScreenHook();
@@ -178,8 +178,7 @@ export class Multiplayer {
         // buttons.splice(buttonNumber, 2);
         // buttons[2].a.g.y = 80;
         buttons[buttonNumber][cc.ig.GUI.renameTextButton]('Connect', true);
-        this.startGame = buttons[0][cc.ig.GUI.callbackFunction];
-        this.loadScreen = buttons[2][cc.ig.GUI.callbackFunction];
+        this.loadScreen = buttons[buttonNumber][cc.ig.GUI.callbackFunction];
         buttons[buttonNumber][cc.ig.GUI.callbackFunction] = this.startConnect.bind(this);
     }
 
@@ -192,6 +191,7 @@ export class Multiplayer {
 
         const playerMove = new OnPlayerMoveListener(this);
         const playerAnimation = new OnPlayerAnimationListener(this);
+        const playerHealth = new OnPlayerHealthChangeListener(this);
         const entityMove = new OnEntityMoveListener(this);
         const entityAnimation = new OnEntityAnimationListener(this);
         const entityHealthChange = new OnEntityHealthChangeListener(this);
@@ -199,6 +199,7 @@ export class Multiplayer {
 
         playerMove.register(playerListener);
         playerAnimation.register(playerListener);
+        playerHealth.register(playerListener);
         entityMove.register(entityListener);
         entityAnimation.register(entityListener);
         entityHealthChange.register(entityListener);

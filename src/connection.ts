@@ -21,7 +21,7 @@ export interface IConnection {
 
     updateEntityPosition(id: number, pos: ig.Vector3): void;
     updateEntityAnimation(id: number, face: ig.Vector2, anim: string): void;
-    updateEntityHealth(id: number, health: number): void;
+    updateEntityHealth(id: number | null, health: number): void;
     updateEntityState(id: number, state: string): void;
     updateEntityTarget(id: number, target: string | number | null): void;
 
@@ -53,5 +53,5 @@ export interface IConnection {
     onUpdateEntityTarget(callback:
         (id: number, target: string | number | null) => void): void;
     onUpdateEntityHealth(callback:
-        (id: number, health: number) => void): void;
+        (id: number | string, health: number) => void): void;
 }

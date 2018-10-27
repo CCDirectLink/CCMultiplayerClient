@@ -64,6 +64,9 @@ declare namespace ig {
         RhombusParticle: ig.EntityType;
         HiddenSkyBlock: ig.EntityType;
         Enemy: ig.EntityType;
+        Effect: ig.EntityType;
+        Particle: ig.EntityType;
+        CopyParticle: ig.EntityType;
     }
     interface TargetableEntity extends Entity {
 
