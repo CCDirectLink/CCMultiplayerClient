@@ -1,52 +1,58 @@
 import { IBallInfo } from '../../ballInfo';
+import { IMultiplayerEntity } from '../../mpEntity';
 import { Multiplayer } from '../../multiplayer';
 
 export class OnEntitySpawnListener {
-    private unknownEntities: Array<string | ig.EntityType> = [];
-    private recursiveEntities: Array<string | ig.EntityType> = [];
+    private unknownEntities: Array<string | typeof ig.Entity> = [];
+    private recursiveEntities: Array<string | typeof ig.Entity> = [];
+    private original!: (type: string | typeof ig.Entity,
+                        x: number,
+                        y: number,
+                        z: number,
+                        settings: any,
+                        showAppearEffects?: boolean) => ig.Entity;
 
     constructor(
         private main: Multiplayer,
     ) { }
 
     public register(): void {
-        const self = this;
-
-        cc.ig.gameMain[cc.ig.varNames.gameMainSpawnEntity] = (type: string | ig.EntityType,
-                                                              x: number,
-                                                              y: number,
-                                                              z: number,
-                                                              settings: any,
-                                                              showAppearEffects: boolean) => {
+        this.original = ig.game.spawnEntity;
+        ig.game.spawnEntity = (type: string | typeof ig.Entity,
+                               x: number,
+                               y: number,
+                               z: number,
+                               settings: any,
+                               showAppearEffects?: boolean) => {
             return this.onEntitySpawned(type, x, y, z, settings, showAppearEffects);
         };
     }
 
-    public onEntitySpawned(type: string | ig.EntityType,
+    public onEntitySpawned(type: string | typeof ig.Entity,
                            x: number,
                            y: number,
                            z: number,
                            settings: any,
                            showAppearEffects?: boolean): ig.Entity {
-        const blacklist: Array<string | ig.EntityType> = [
+        const blacklist: Array<string | typeof ig.Entity> = [
             'Marker',
             'HiddenBlock',
-            cc.ig.entityList.Player,
-            cc.ig.entityList.Crosshair,
-            cc.ig.entityList.CrosshairDot,
-            cc.ig.entityList.OffsetParticle,
-            cc.ig.entityList.RhombusParticle,
-            cc.ig.entityList.HiddenSkyBlock,
-            cc.ig.entityList.Effect,
-            cc.ig.entityList.Particle,
-            cc.ig.entityList.CopyParticle,
+            ig.ENTITY.Player,
+            ig.ENTITY.Crosshair,
+            ig.ENTITY.CrosshairDot,
+            ig.ENTITY.OffsetParticle,
+            ig.ENTITY.RhombusParticle,
+            ig.ENTITY.HiddenSkyBlock,
+            ig.ENTITY.Effect,
+            ig.ENTITY.Particle,
+            ig.ENTITY.CopyParticle,
         ];  // Static objects that never change or objects that should never be synced
 
         if (blacklist.indexOf(type) >= 0) {
-            return cc.ig.gameMain.spawnEntity(type, x, y, z, settings, showAppearEffects);
+            return this.original.call(ig.game, type, x, y, z, settings, showAppearEffects);
         }
 
-        if (type === cc.ig.entityList.Ball) {
+        if (type === ig.ENTITY.Ball) {
             const ballSettings = this.filterBall(settings);
             if (ballSettings) {
                 if (typeof ballSettings.combatant !== 'string'
@@ -56,10 +62,10 @@ export class OnEntitySpawnListener {
             } else {
                 console.warn('Could not find type of ball. Maybe something else threw the ball?');
             }
-            return cc.ig.gameMain.spawnEntity(type, x, y, z, settings, showAppearEffects);
+            return this.original.call(ig.game, type, x, y, z, settings, showAppearEffects);
         }
 
-        const entity = cc.ig.gameMain.spawnEntity(type, x, y, z, settings, showAppearEffects);
+        const entity = this.original.call(ig.game, type, x, y, z, settings, showAppearEffects) as IMultiplayerEntity;
 
         const realType = this.findEntityType(type);
         if (realType === undefined) {
@@ -120,8 +126,8 @@ export class OnEntitySpawnListener {
         dir: ig.Vector2,
         party: number,
     }): IBallInfo | null {
-        const player = cc.ig.playerInstance();
-        const proxies = simplify.getEntityProxies(player);
+        const player = ig.game.playerEntity;
+        const proxies = player.proxies;
 
         for (const name in proxies) {
             if (proxies.hasOwnProperty(name)) {
@@ -140,13 +146,13 @@ export class OnEntitySpawnListener {
         return null;
     }
 
-    private findEntityType(type: string | ig.EntityType): string | undefined {
+    private findEntityType(type: string | typeof ig.Entity): string | undefined {
         if (typeof type === 'string') {
             return type;
         }
 
-        for (const t in cc.ig.entityList) {
-            if (cc.ig.entityList[t] === type) {
+        for (const t in ig.ENTITY) {
+            if ((ig.ENTITY as any)[t] === type) {
                 return t;
             }
         }

@@ -22,7 +22,7 @@ export class OnEntityStateChangeListener {
     }
 
     private onUpdate(entity: IMultiplayerEntity): void {
-        const state = simplify.getCurrentState(entity);
+        const state = entity.currentState;
 
         if (state !== this.last) {
             this.onEntityStateChanged(entity, state);

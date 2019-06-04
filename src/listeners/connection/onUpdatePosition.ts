@@ -12,7 +12,7 @@ export class OnUpdatePositionListener {
     public onUpdatePostion(player: string, position: ig.Vector3): void {
         const pl = this.main.players[player];
         if (pl && pl.entity) {
-            cc.ig.gameMain.setEntityPosition(pl.entity, position);
+            pl.entity.coll.pos = position;
             pl.position = position;
         }
     }

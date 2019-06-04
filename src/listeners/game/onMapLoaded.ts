@@ -7,9 +7,9 @@ export class OnMapLoadedListener {
     ) { }
 
     public register(): void {
-        const originalUpdate = cc.ig.gameMain.update;
-        cc.ig.gameMain.update = () => {
-                const result = originalUpdate.call(cc.ig.gameMain);
+        const originalUpdate = ig.game.update;
+        ig.game.update = () => {
+                const result = originalUpdate.call(ig.game);
                 this.afterUpdate();
                 return result;
             };

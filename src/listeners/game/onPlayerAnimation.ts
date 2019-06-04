@@ -22,7 +22,7 @@ export class OnPlayerAnimationListener {
     }
 
     private onUpdate(player: ig.Player): void {
-        const animation = simplify.getAnimation(player);
+        const animation = player.currentAnim;
         const face = player.face;
 
         if (animation !== this.lastAnim || !this.compareFace(face, this.lastFace)) {

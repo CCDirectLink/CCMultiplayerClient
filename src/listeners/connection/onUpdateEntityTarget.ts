@@ -10,7 +10,7 @@ export class OnUpdateEntityTargetListener {
     }
 
     public onUpdateEntityTarget(id: number, target: string | number | null): void {
-        let entity: ig.Enemy | null | undefined;
+        let entity: ig.Entity | null | undefined;
 
         if (target === null) {
             entity = null;
@@ -30,7 +30,7 @@ export class OnUpdateEntityTargetListener {
             return;
         }
 
-        simplify.setEntityTarget(this.main.entities[id], entity);
+        this.main.entities[id].target = entity;
         this.main.entities[id].lastTarget = this.main.entities[id].target; // In order to avoid sending an target update
     }
 }

@@ -20,12 +20,8 @@ export class SocketIoConnector implements IConnection {
         this.address = server.type + '://' + server.hostname + ':' + server.port + '/';
     }
 
-    public async load(): Promise<void> {
-        await new Promise((resolve, reject) => {
-            simplify.loadScript(this.address + this.PATH, () => {
-                resolve();
-            });
-        });
+    public load(): Promise<void> {
+        return simplify.loadScript(this.address + this.PATH);
     }
 
     public async open(hostname: string, port: number, type?: string): Promise<void> {

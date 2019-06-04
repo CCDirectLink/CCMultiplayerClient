@@ -19,10 +19,10 @@ export class EntityListener {
     }
 
     public onUpdate(): void {
-        const entities = cc.ig.gameMain.entities;
+        const entities = ig.game.entities;
         for (let i = 0; i < entities.length; i++) {
-            const entity = cc.ig.gameMain.entities[i];
-            if (!entity.multiplayerId || !(entity instanceof (cc.ig.entityList.Enemy as any))) {
+            const entity = ig.game.entities[i];
+            if (!entity.multiplayerId || !(entity instanceof (ig.ENTITY.Enemy as any))) {
                 continue;
             }
 

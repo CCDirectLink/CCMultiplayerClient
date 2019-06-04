@@ -18,7 +18,7 @@ export class PlayerListener {
     }
 
     public onUpdate(): void {
-        const player = cc.ig.playerInstance();
+        const player = ig.game.playerEntity;
 
         if (player && !this.main.loadingMap) {
             for (const child of this.children) {

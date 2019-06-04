@@ -1,10 +1,14 @@
 declare let activeMods: Mod[];
 declare let inactiveMods: Mod[];
-declare let cc: cc;
 
 declare let getEntry: (key: string) => string;
 declare const entries: Readonly<{
-    enterPrevSubState: string
+    AnimationState: string,
+    enterPrevSubState: string,
+    entityData: string,
+    Timer: string,
+    init: string,
+    gameMainSpawnEntity: string
 }>
 
 /**
@@ -28,62 +32,4 @@ interface Mod {
     setAsset(original: string, modified: string): void;
     initializeTable(ccloader: CCLoader, cb: Function): void;
     executeTable(ccloader: CCLoader): void;
-}
-
-interface cc {
-    ig: cc.ig;
-    sc: cc.sc;
-}
-declare namespace cc {
-    interface ig {
-        GUI: ig.Gui;
-        varNames: ccig.varNames;
-        gameMain: ig.GameMain;
-        baseEntity: ig.Entity;
-        entityList: ig.EntityList;
-        events: ig.EventList;
-        combatActions: ig.CombatActions;
-        TeleportPosition: ig.TeleportPosition;
-
-        bgm: ig.Bgm;
-        interact: ig.Interact;
-
-        playerInstance(): ig.Player;
-    }
-    namespace ccig {
-        interface varNames {
-            titleScreenButtons: string;
-            gameMainLoadMap: string;
-            gameMainTeleport: string;
-            entityKill: string;
-            gameMainSpawnEntity: string;
-            entityData: string;
-            entityPosition: string;
-            currentAnimation: string;
-            currentState: string;
-            systemHasFocusLost: string;
-            activate: string;
-            proxies: string;
-        }
-    }
-
-    interface sc {
-        EnemyType: ccsc.EnemyType;
-        ButtonListBox: sc.ButtonListBox;
-        SaveSlotButton: sc.SaveSlotButton;
-        varNames: ccsc.varNames;
-        playerModelInstance: ccsc.Model;
-    }
-    namespace ccsc {
-        interface varNames {
-            init: string;
-            autoSlotMiss: string;
-        }
-        interface EnemyType {
-            new (name: string): sc.EnemyType;
-        }
-        interface Model {
-            [key: string]: any; // Workaround
-        }
-    }
 }

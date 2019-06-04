@@ -7,15 +7,15 @@ export class OnEntityKilledListener {
 
     public register(): void {
         const self = this;
-        const originalKill = cc.ig.baseEntity.prototype[cc.ig.varNames.entityKill];
-        cc.ig.baseEntity.prototype[cc.ig.varNames.entityKill] = function(this: ig.Entity) {
+        const originalKill = ig.Entity.prototype.kill;
+        ig.Entity.prototype.kill = function(this: ig.Entity, ...args: any) {
             if (this.multiplayerId) {
                 self.onEntityKilled(this.multiplayerId);
                 this.multiplayerId = undefined;
                 delete this.multiplayerId;
             }
 
-            return originalKill.apply(this, arguments);
+            return originalKill.apply(this, args);
         };
     }
 

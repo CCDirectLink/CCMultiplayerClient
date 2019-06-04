@@ -14,7 +14,7 @@ export class OnUpdateEntityStateListener {
             return;
         }
 
-        this.main.entities[id][cc.ig.varNames.currentState] = {protected: state};
-        new cc.ig.events.SET_ENEMY_STATE({enemy: this.main.entities[id], enemyState: state}).start();
+        this.main.entities[id].currentState = {protected: state};
+        new ig.EVENT_STEP.SET_ENEMY_STATE({enemy: this.main.entities[id], enemyState: state}).start();
     }
 }

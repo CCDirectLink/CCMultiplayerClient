@@ -7,9 +7,11 @@ export class OnTeleportListener {
     ) { }
 
     public register(): void {
-        cc.ig.gameMain[cc.ig.varNames.gameMainTeleport] = (map: string, teleportPosition: any, hint: string) => {
-            this.onTeleport(map, teleportPosition, hint);
-            return cc.ig.gameMain.teleport.call(cc.ig.gameMain, map, teleportPosition, hint);
+        const instance = this;
+        const original = ig.game.teleport;
+        ig.game.teleport = function(this: ig.Game, map: string, teleportPosition: any, hint: string) {
+            instance.onTeleport(map, teleportPosition, hint);
+            return original.call(this, map, teleportPosition, hint);
         };
     }
 

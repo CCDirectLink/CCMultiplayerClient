@@ -22,7 +22,7 @@ export class OnEntityMoveListener {
     }
 
     private onUpdate(entity: IMultiplayerEntity): void {
-        const pos = cc.ig.gameMain.getEntityPosition(entity);
+        const pos: ig.Vector3 = entity.coll.pos;
 
         if (!this.comparePosition(pos, this.last)) {
             this.onEntityMoved(entity, pos);

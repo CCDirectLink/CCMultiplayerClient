@@ -20,13 +20,13 @@ export class OnThrownBallListener {
             return;
         }
 
-        const actonStep = new cc.ig.combatActions.SHOOT_PROXY({ proxy: ballInfo.ballInfo, dir: ballInfo.dir });
+        const actonStep = new ig.ACTION_STEP.SHOOT_PROXY({ proxy: ballInfo.ballInfo, dir: ballInfo.dir });
         simplify.runAction(actonStep, entity);
     }
 
     private resolveEntity(combatant: number | string | undefined): ig.Entity | undefined {
         if (combatant === undefined) {
-            return cc.ig.playerInstance();
+            return ig.game.playerEntity;
         }
 
         if (typeof combatant === 'string') {

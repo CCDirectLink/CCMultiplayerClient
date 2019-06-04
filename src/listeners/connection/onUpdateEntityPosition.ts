@@ -14,6 +14,6 @@ export class OnUpdateEntityPositionListener {
             return;
         }
 
-        this.main.copyEntityPosition(pos, cc.ig.gameMain.getEntityPosition(this.main.entities[id]));
+        this.main.copyEntityPosition(pos, this.main.entities[id].coll.pos);
     }
 }

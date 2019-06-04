@@ -22,7 +22,7 @@ export class OnPlayerHealthChangeListener {
     }
 
     private onUpdate(player: ig.Player): void {
-        const health = simplify.getCurrentHp(player);
+        const health = player.params.getStat("hp");
 
         if (health !== this.last) {
             this.onPlayerHealthChanged(health);

@@ -6,10 +6,10 @@ export class OnMapEnterListener {
     ) { }
 
     public register(): void {
-        const originalLoad = cc.ig.gameMain[cc.ig.varNames.gameMainLoadMap];
-        cc.ig.gameMain[cc.ig.varNames.gameMainLoadMap] = (data: ig.Map) => {
+        const originalLoad = ig.game.loadLevel;
+        ig.game.loadLevel = (data: ig.Map) => {
             this.onMapEnter(data);
-            const result = originalLoad.call(cc.ig.gameMain, data);
+            const result = originalLoad.call(ig.game, data);
             this.main.loadingMap = false;
             return result;
         };
@@ -43,6 +43,6 @@ export class OnMapEnterListener {
     }
 
     private loadEntity(name: string): void {
-        new cc.sc.EnemyType(name).load();
+        new sc.EnemyType(name).load();
     }
 }

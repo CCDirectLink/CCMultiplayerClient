@@ -23,7 +23,7 @@ export class OnEntityAnimationListener {
     }
 
     private onUpdate(entity: IMultiplayerEntity): void {
-        const animation = simplify.getAnimation(entity);
+        const animation = entity.currentAnim;
         const face = entity.face;
 
         if (animation !== this.lastAnim || !this.compareFace(face, this.lastFace)) {

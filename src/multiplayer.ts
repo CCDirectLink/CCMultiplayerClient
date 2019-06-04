@@ -24,13 +24,13 @@ import { OnEntityKilledListener } from './listeners/game/onKill';
 import { OnMapEnterListener } from './listeners/game/onMapEnter';
 import { OnMapLoadedListener } from './listeners/game/onMapLoaded';
 import { OnPlayerAnimationListener } from './listeners/game/onPlayerAnimation';
+import { OnPlayerHealthChangeListener } from './listeners/game/onPlayerHealthChange';
 import { OnPlayerMoveListener } from './listeners/game/onPlayerMove';
 import { OnTeleportListener } from './listeners/game/onTeleport';
 import { PlayerListener } from './listeners/game/playerListener';
 import { LoadScreenHook } from './loadScreenHook';
 import { IMultiplayerEntity } from './mpEntity';
 import { IPlayer } from './player';
-import { OnPlayerHealthChangeListener } from './listeners/game/onPlayerHealthChange';
 
 export class Multiplayer {
     public futureEntities: IEntityDefinition[] = [];
@@ -75,7 +75,7 @@ export class Multiplayer {
             this.loadScreen);
 
         // Go back to previous sub state (out of the menu).
-        cc.sc.playerModelInstance[entries.enterPrevSubState](); // sc.model.enterPrevSubState
+        sc.model.enterPrevSubState();
 
         await this.waitForServerSelection(serverNumber);
 
@@ -120,7 +120,7 @@ export class Multiplayer {
     }
 
     public spawnMultiplayerEntity(e: IEntityDefinition): any {
-        new cc.sc.EnemyType(e.settings.enemyInfo.type).load(() => {
+        new sc.EnemyType(e.settings.enemyInfo.type).load(() => {
             const entity = this.entitySpawnListener.onEntitySpawned(e.type, e.pos.x, e.pos.y, e.pos.z, e.settings);
 
             this.entities[e.id] = entity as IMultiplayerEntity;
@@ -130,12 +130,12 @@ export class Multiplayer {
             Object.defineProperty(protectedPos, 'x', { get() { return protectedPos.xProtected; }, set() { return; } });
             Object.defineProperty(protectedPos, 'y', { get() { return protectedPos.yProtected; }, set() { return; } });
             Object.defineProperty(protectedPos, 'z', { get() { return protectedPos.zProtected; }, set() { return; } });
-            Object.defineProperty(entity[cc.ig.varNames.entityData], cc.ig.varNames.entityPosition,
+            Object.defineProperty(entity.coll, 'pos',
                 { get() { return protectedPos; }, set() {console.log('tried to maniplulate pos'); } });
 
-            let protectedAnim = entity[cc.ig.varNames.currentAnimation];
+            let protectedAnim = entity.currentAnim;
 
-            Object.defineProperty(entity, cc.ig.varNames.currentAnimation, {
+            Object.defineProperty(entity, 'currentAnim', {
                 get() { return protectedAnim; },
                 set(data) { if (data.protected) { protectedAnim = data.protected; } },
             });
@@ -148,7 +148,7 @@ export class Multiplayer {
                 { get() { return protectedFace; }, set() {console.log('tried to maniplulate face'); } });
 
             let protectedState = simplify.getCurrentState(entity);
-            Object.defineProperty(entity, cc.ig.varNames.currentState, {
+            Object.defineProperty(entity, 'currentState', {
                 get() { return protectedState; },
                 set(data) { if (data.protected) { protectedState = data.protected; } },
             });
@@ -173,13 +173,12 @@ export class Multiplayer {
     private initializeGUI(): void {
         const buttonNumber = ig.platform === 1 ? 2 : 1;
 
-        const buttons = simplify.getInnerGui(cc.ig.GUI.menues[15].children[2])
-                            [getEntry('buttons')];
+        const buttons = ig.gui.menues[15].children[2].gui.buttons;
         // buttons.splice(buttonNumber, 2);
         // buttons[2].a.g.y = 80;
-        buttons[buttonNumber][cc.ig.GUI.renameTextButton]('Connect', true);
-        this.loadScreen = buttons[buttonNumber][cc.ig.GUI.callbackFunction];
-        buttons[buttonNumber][cc.ig.GUI.callbackFunction] = this.startConnect.bind(this);
+        buttons[buttonNumber].setText('Connect', true);
+        this.loadScreen = buttons[buttonNumber].onButtonPress;
+        buttons[buttonNumber].onButtonPress = this.startConnect.bind(this);
     }
 
     private initializeListeners(): void {
@@ -261,11 +260,11 @@ export class Multiplayer {
 
     private launchGame(): void {
         // Remove title screen interact.
-        const buttonInteract = simplify.getInnerGui(cc.ig.GUI.menues[15].children[2]).Z; // TODO Resolve buttonInteract
+        const buttonInteract = ig.gui.menues[15].children[2].buttonInteract; // TODO Resolve buttonInteract
 
-        cc.ig.interact.removeEntry(buttonInteract);
-        cc.ig.bgm.clear('MEDIUM_OUT'); // Clear BGM
-        cc.ig.gameMain.start(); // Start the game in story mode.
+        ig.interact.removeEntry(buttonInteract);
+        ig.bgm.clear('MEDIUM_OUT'); // Clear BGM
+        ig.game.start(); // Start the game in story mode.
     }
 
     private showLogin(): Promise<string> {
@@ -302,6 +301,6 @@ export class Multiplayer {
     }
 
     private disableFocus() {
-        ig.system[cc.ig.varNames.systemHasFocusLost] = () => false;
+        ig.system.hasFocusLost = () => false;
     }
 }

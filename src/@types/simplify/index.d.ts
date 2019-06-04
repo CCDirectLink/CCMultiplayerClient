@@ -8,39 +8,8 @@ interface simplify {
     registerUpdate(func: Function): void;
     fireUpdate(): void;
 
-    loadScript(url: string, callback: (this: HTMLElement, ev: Event) => any): void;
-
-    getActiveMapName(): string;
-    
-    getAnimation(entity: ig.Entity): string;
-    setAnimation(entity: ig.Entity, value: string | object): void;
-
-    runAction(action: ig.ActionStep, ...args: any[]): any;
-    getEntityProxies(entity: ig.Entity): { [key: string]: ig.Proxy | undefined };
-    killEntity(entity: ig.Entity, levelChange?: any): void;
-    setEntityTarget(entity: ig.Entity, target: ig.TargetableEntity | null): void;
-    getProxyAction(action: any): any;
-    getNextProxyAction(action: any): any;
-
-    getInnerGui(gui: ig.Gui): ig.Gui;
-
+    loadScript(url: string): Promise<void>;
     jumpHigh(): void;
-
-    getParams(entity: ig.Entity): ig.Params;
-    getParamsStat(entity: ig.Entity, stat: string): any;
-    getBaseParams(entity: ig.Entity): ig.BaseParams;
-    getBaseParam(entity: ig.Entity, stat: string): any;
-    setBaseParams(entity: ig.Entity, stats: ig.BaseParams): void;
-    setBaseParam(entity: ig.Entity, stat: string, value: any): void;
-    getCurrentHp(entity: ig.Entity): number;
-    setCurrentHp(entity: ig.Entity, hp: number): void;
-
-    getAnimationTimer(entity: ig.Entity): number;
-    setAnimationTimer(entity: ig.Entity, time: number): void;
-    getCurrentState(entity: ig.Entity): string;
-    setCurrentState(entity: ig.Entity, state: string): void;
-    isPlayerInCombat(): boolean;
-    setForceCombat(active: boolean): void;
 
     // getModName(mod: string): string; // Literally useless
     getActiveMods(): string[];

@@ -1,9 +1,5 @@
 import { Multiplayer } from './multiplayer';
 
-if (!cc) {
-    throw new Error('No modloader found!');
-}
-
 async function startMultiplayer(): Promise<void> {
     try {
         await waitForMods();

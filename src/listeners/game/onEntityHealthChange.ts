@@ -22,7 +22,7 @@ export class OnEntityHealthChangeListener {
     }
 
     private onUpdate(entity: IMultiplayerEntity): void {
-        const health = simplify.getCurrentHp(entity);
+        const health = entity.params.getStat('hp');
 
         if (health !== this.last) {
             this.onEntityHealthChanged(entity, health);

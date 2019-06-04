@@ -14,18 +14,18 @@ export class OnUpdateAnimationListener {
         if (pl && pl.entity) {
             pl.entity.face.x = face.x;
             pl.entity.face.y = face.y;
-            pl.entity.pk = anim;
+            pl.entity.currentAnim = anim;
             this.clearAnimation(pl.entity);
             this.playAnimation(pl.entity, anim);
         }
     }
 
     private clearAnimation(entity: ig.Entity): void {
-        new cc.ig.events.CLEAR_ANIMATION({entity}).start();
+        new ig.EVENT_STEP.CLEAR_ANIMATION({entity}).start();
     }
 
     private playAnimation(entity: ig.Entity, anim: string): void {
-        new cc.ig.events.DO_ACTION({
+        new ig.EVENT_STEP.DO_ACTION({
             entity,
             keepState: false,
             action: [{

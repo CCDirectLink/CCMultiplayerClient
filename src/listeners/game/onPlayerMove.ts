@@ -21,7 +21,7 @@ export class OnPlayerMoveListener {
     }
 
     private onUpdate(player: ig.Player): void {
-        const pos = cc.ig.gameMain.getEntityPosition(player);
+        const pos = player.coll.pos;
 
         if (!this.comparePosition(pos, this.last)) {
             this.onPlayerMoved(player, pos);

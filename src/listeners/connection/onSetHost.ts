@@ -34,15 +34,15 @@ export class OnSetHostListener {
     }
 
     private unlockEntity(entity: ig.Entity): void {
-        const startPos = cc.ig.gameMain.getEntityPosition(entity);
+        const startPos = entity.coll.pos;
         let pos: ig.Vector3 = {x: startPos.x, y: startPos.y, z: startPos.z};
-        Object.defineProperty(entity[cc.ig.varNames.entityData], cc.ig.varNames.entityPosition, {
+        Object.defineProperty(entity.coll, 'pos', {
             get() { return pos; },
             set(value: ig.Vector3) { pos = value; },
         });
 
-        let anim = entity[cc.ig.varNames.currentAnimation];
-        Object.defineProperty(entity, cc.ig.varNames.currentAnimation, {
+        let anim = entity.currentAnim;
+        Object.defineProperty(entity, 'currentAnim', {
             get() { return anim; },
             set(value) { anim = value; },
         });
@@ -54,7 +54,7 @@ export class OnSetHostListener {
         });
 
         let state = simplify.getCurrentState(entity);
-        Object.defineProperty(entity, cc.ig.varNames.currentState, {
+        Object.defineProperty(entity, 'currentState', {
             get() { return state; },
             set(value: string) { state = value; },
         });
@@ -69,18 +69,18 @@ export class OnSetHostListener {
     }
 
     private lockEntity(entity: ig.Entity): void {
-        const pos = cc.ig.gameMain.getEntityPosition(entity);
+        const pos = entity.coll.pos;
 
         const protectedPos = {xProtected: pos.x, yProtected: pos.y, zProtected: pos.z};
         Object.defineProperty(protectedPos, 'x', { get() { return protectedPos.xProtected; }, set() { return; } });
         Object.defineProperty(protectedPos, 'y', { get() { return protectedPos.yProtected; }, set() { return; } });
         Object.defineProperty(protectedPos, 'z', { get() { return protectedPos.zProtected; }, set() { return; } });
-        Object.defineProperty(entity[cc.ig.varNames.entityData], cc.ig.varNames.entityPosition,
+        Object.defineProperty(entity.coll, 'pos',
             { get() { return protectedPos; }, set() {console.log('tried to maniplulate pos'); } });
 
-        let protectedAnim = entity[cc.ig.varNames.currentAnimation];
+        let protectedAnim = entity.coll;
 
-        Object.defineProperty(entity, cc.ig.varNames.currentAnimation, {
+        Object.defineProperty(entity, 'currentAnim', {
             get() { return protectedAnim; },
             set(data) { if (data.protected) { protectedAnim = data.protected; } },
         });
@@ -93,7 +93,7 @@ export class OnSetHostListener {
             { get() { return protectedFace; }, set() {console.log('tried to maniplulate face'); } });
 
         let protectedState = simplify.getCurrentState(entity);
-        Object.defineProperty(entity, cc.ig.varNames.currentState, {
+        Object.defineProperty(entity, 'currentState', {
             get() { return protectedState; },
             set(data) { if (data.protected) { protectedState = data.protected; } },
         });
