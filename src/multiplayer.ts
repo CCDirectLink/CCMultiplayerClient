@@ -147,7 +147,7 @@ export class Multiplayer {
             Object.defineProperty(entity, 'face',
                 { get() { return protectedFace; }, set() {console.log('tried to maniplulate face'); } });
 
-            let protectedState = simplify.getCurrentState(entity);
+            let protectedState = entity.currentState;
             Object.defineProperty(entity, 'currentState', {
                 get() { return protectedState; },
                 set(data) { if (data.protected) { protectedState = data.protected; } },
@@ -260,9 +260,10 @@ export class Multiplayer {
 
     private launchGame(): void {
         // Remove title screen interact.
-        const buttonInteract = ig.gui.menues[15].children[2].buttonInteract; // TODO Resolve buttonInteract
+        // const buttonInteract = ig.gui.menues[15].children[2].buttonInteract; // TODO Resolve buttonInteract
+        // ig.interact.removeEntry(buttonInteract);
 
-        ig.interact.removeEntry(buttonInteract);
+        ig.interact.removeEntry(ig.interact.entries[0]);
         ig.bgm.clear('MEDIUM_OUT'); // Clear BGM
         ig.game.start(); // Start the game in story mode.
     }

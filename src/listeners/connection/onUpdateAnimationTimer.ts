@@ -12,7 +12,7 @@ export class OnUpdateAnimationTimerListener {
     public onUpdateAnimationTimer(player: string, time: number): void {
         const pl = this.main.players[player];
         if (pl && pl.entity) {
-            simplify.setAnimationTimer(pl.entity, time);
+            pl.entity.animState.timer = time;
         }
     }
 }

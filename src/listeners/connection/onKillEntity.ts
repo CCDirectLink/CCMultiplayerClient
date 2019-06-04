@@ -14,7 +14,7 @@ export class OnKillEntityListener {
             return;
         }
 
-        simplify.killEntity(this.main.entities[id]);
+        this.main.entities[id].kill();
         delete this.main.entities[id];
     }
 }

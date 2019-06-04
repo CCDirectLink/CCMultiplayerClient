@@ -1,7 +1,7 @@
 {
 	"name": "multiplayer",
 	"main": "mod.js",
-	"version": "0.0.4",
+	"version": "0.0.7",
 	"dependencies": {
 		"ccloader": "^2.0.0",
 		"crosscode": "^1.0.0"

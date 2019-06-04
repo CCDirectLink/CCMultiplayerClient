@@ -28,6 +28,8 @@ declare namespace ig {
         multiplayerId?: number;
         face: Vector2;
         currentAnim: string;
+        currentState: string;
+        animState: ig.AnimationState;
     }
 
     interface Gui {

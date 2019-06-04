@@ -20,6 +20,6 @@ export class OnUpdateEntityAnimationListener {
     private setEntityAnimation(from: {face: ig.Vector2, anim: string}, to: ig.Entity) {
         to.face.xProtected = from.face.x;
         to.face.yProtected = from.face.y;
-        simplify.setAnimation(to, {protected: from.anim});
+        to.currentAnim = {protected: from.anim} as unknown as string;
     }
 }

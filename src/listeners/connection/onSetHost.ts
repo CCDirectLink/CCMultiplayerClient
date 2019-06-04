@@ -53,7 +53,7 @@ export class OnSetHostListener {
             set(value: ig.Vector2) { face = value; },
         });
 
-        let state = simplify.getCurrentState(entity);
+        let state = entity.currentState;
         Object.defineProperty(entity, 'currentState', {
             get() { return state; },
             set(value: string) { state = value; },
@@ -92,7 +92,7 @@ export class OnSetHostListener {
         Object.defineProperty(entity, 'face',
             { get() { return protectedFace; }, set() {console.log('tried to maniplulate face'); } });
 
-        let protectedState = simplify.getCurrentState(entity);
+        let protectedState = entity.currentState;
         Object.defineProperty(entity, 'currentState', {
             get() { return protectedState; },
             set(data) { if (data.protected) { protectedState = data.protected; } },

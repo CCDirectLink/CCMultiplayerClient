@@ -21,7 +21,7 @@ export class OnThrownBallListener {
         }
 
         const actonStep = new ig.ACTION_STEP.SHOOT_PROXY({ proxy: ballInfo.ballInfo, dir: ballInfo.dir });
-        simplify.runAction(actonStep, entity);
+        actonStep.run(entity);
     }
 
     private resolveEntity(combatant: number | string | undefined): ig.Entity | undefined {

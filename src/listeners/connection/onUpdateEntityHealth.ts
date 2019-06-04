@@ -19,7 +19,7 @@ export class OnUpdateEntityHealthListener {
 
         console.log('[multiplayer] Set ' + id + '\'s health to ' + health);
 
-        simplify.setCurrentHp(entity, health);
+        entity.params.currentHp = health;
     }
 
     private getEntity(id: number | string): IMultiplayerEntity | null {
