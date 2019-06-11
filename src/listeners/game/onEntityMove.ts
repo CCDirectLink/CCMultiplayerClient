@@ -4,7 +4,7 @@ import { EntityListener } from './entityListener';
 
 export class OnEntityMoveListener {
 
-    private last: ig.Vector3 = {x: -1, y: -1, z: -1};
+    private last: Vec3 = {x: -1, y: -1, z: -1};
 
     constructor(
         private main: Multiplayer,
@@ -17,12 +17,12 @@ export class OnEntityMoveListener {
         });
     }
 
-    public onEntityMoved(entity: IMultiplayerEntity, position: ig.Vector3): void {
+    public onEntityMoved(entity: IMultiplayerEntity, position: Vec3): void {
         this.main.connection.updateEntityPosition(entity.multiplayerId, position);
     }
 
     private onUpdate(entity: IMultiplayerEntity): void {
-        const pos: ig.Vector3 = entity.coll.pos;
+        const pos: Vec3 = entity.coll.pos;
 
         if (!this.comparePosition(pos, this.last)) {
             this.onEntityMoved(entity, pos);
@@ -30,13 +30,13 @@ export class OnEntityMoveListener {
         }
     }
 
-    private comparePosition(left: ig.Vector3, right: ig.Vector3): boolean {
+    private comparePosition(left: Vec3, right: Vec3): boolean {
         return left.x === right.x &&
             left.y === right.y &&
             left.z === right.z;
     }
 
-    private copyPosition(from: ig.Vector3, to: ig.Vector3): void {
+    private copyPosition(from: Vec3, to: Vec3): void {
         to.x = from.x;
         to.y = from.y;
         to.z = from.z;

@@ -9,7 +9,7 @@ export class OnRegisterEntityListener {
         this.main.connection.onRegisterEntity(this.onRegisterEntity.bind(this));
     }
 
-    public onRegisterEntity(id: number, type: string, pos: ig.Vector3, settings: object): void {
+    public onRegisterEntity(id: number, type: string, pos: Vec3, settings: object): void {
         if (this.main.host || this.main.entities[id]) {
             return;
         }

@@ -1,3 +1,4 @@
+import { IMultiplayerEntity } from '../../mpEntity';
 import { Multiplayer } from '../../multiplayer';
 
 export class OnSetHostListener {
@@ -33,12 +34,12 @@ export class OnSetHostListener {
         }
     }
 
-    private unlockEntity(entity: ig.Entity): void {
+    private unlockEntity(entity: IMultiplayerEntity): void {
         const startPos = entity.coll.pos;
-        let pos: ig.Vector3 = {x: startPos.x, y: startPos.y, z: startPos.z};
+        let pos: Vec3 = {x: startPos.x, y: startPos.y, z: startPos.z};
         Object.defineProperty(entity.coll, 'pos', {
             get() { return pos; },
-            set(value: ig.Vector3) { pos = value; },
+            set(value: Vec3) { pos = value; },
         });
 
         let anim = entity.currentAnim;
@@ -47,10 +48,10 @@ export class OnSetHostListener {
             set(value) { anim = value; },
         });
 
-        let face: ig.Vector2 = {x: entity.face.x, y: entity.face.y};
+        let face: Vec2 = {x: entity.face.x, y: entity.face.y};
         Object.defineProperty(entity, 'face', {
             get() { return face; },
-            set(value: ig.Vector2) { face = value; },
+            set(value: Vec2) { face = value; },
         });
 
         let state = entity.currentState;
@@ -68,7 +69,7 @@ export class OnSetHostListener {
         }
     }
 
-    private lockEntity(entity: ig.Entity): void {
+    private lockEntity(entity: IMultiplayerEntity): void {
         const pos = entity.coll.pos;
 
         const protectedPos = {xProtected: pos.x, yProtected: pos.y, zProtected: pos.z};

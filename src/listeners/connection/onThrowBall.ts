@@ -20,8 +20,8 @@ export class OnThrownBallListener {
             return;
         }
 
-        const actonStep = new ig.ACTION_STEP.SHOOT_PROXY({ proxy: ballInfo.ballInfo, dir: ballInfo.dir });
-        actonStep.run(entity);
+        const actonStep = new ig.ACTION_STEP.SHOOT_PROXY({ proxy: { type: ballInfo.ballInfo }, dir: ballInfo.dir });
+        actonStep.run(entity as sc.BasicCombatant);
     }
 
     private resolveEntity(combatant: number | string | undefined): ig.Entity | undefined {

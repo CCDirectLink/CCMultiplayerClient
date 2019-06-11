@@ -5,12 +5,12 @@ import { Multiplayer } from '../../multiplayer';
 export class OnEntitySpawnListener {
     private unknownEntities: Array<string | typeof ig.Entity> = [];
     private recursiveEntities: Array<string | typeof ig.Entity> = [];
-    private original!: (type: string | typeof ig.Entity,
-                        x: number,
-                        y: number,
-                        z: number,
-                        settings: any,
-                        showAppearEffects?: boolean) => ig.Entity;
+    private original!: <T extends ig.Entity>(type: string | (new(...args: any[]) => T),
+                                             x: number,
+                                             y: number,
+                                             z: number,
+                                             settings: any,
+                                             showAppearEffects?: boolean) => T;
 
     constructor(
         private main: Multiplayer,
@@ -18,22 +18,22 @@ export class OnEntitySpawnListener {
 
     public register(): void {
         this.original = ig.game.spawnEntity;
-        ig.game.spawnEntity = (type: string | typeof ig.Entity,
-                               x: number,
-                               y: number,
-                               z: number,
-                               settings: any,
-                               showAppearEffects?: boolean) => {
+        ig.game.spawnEntity = <T extends ig.Entity>(type: string | (new(...args: any[]) => T),
+                                                    x: number,
+                                                    y: number,
+                                                    z: number,
+                                                    settings: any,
+                                                    showAppearEffects?: boolean) => {
             return this.onEntitySpawned(type, x, y, z, settings, showAppearEffects);
         };
     }
 
-    public onEntitySpawned(type: string | typeof ig.Entity,
-                           x: number,
-                           y: number,
-                           z: number,
-                           settings: any,
-                           showAppearEffects?: boolean): ig.Entity {
+    public onEntitySpawned<T extends ig.Entity>(type: string | (new(...args: any[]) => T),
+                                                x: number,
+                                                y: number,
+                                                z: number,
+                                                settings: any,
+                                                showAppearEffects?: boolean): T {
         const blacklist: Array<string | typeof ig.Entity> = [
             'Marker',
             'HiddenBlock',
@@ -49,10 +49,10 @@ export class OnEntitySpawnListener {
         ];  // Static objects that never change or objects that should never be synced
 
         if (blacklist.indexOf(type) >= 0) {
-            return this.original.call(ig.game, type, x, y, z, settings, showAppearEffects);
+            return this.original.call(ig.game, type, x, y, z, settings, showAppearEffects) as T;
         }
 
-        if (type === ig.ENTITY.Ball) {
+        if (typeof type !== 'string' && type.prototype === ig.ENTITY.Ball.prototype) {
             const ballSettings = this.filterBall(settings);
             if (ballSettings) {
                 if (typeof ballSettings.combatant !== 'string'
@@ -62,7 +62,7 @@ export class OnEntitySpawnListener {
             } else {
                 console.warn('Could not find type of ball. Maybe something else threw the ball?');
             }
-            return this.original.call(ig.game, type, x, y, z, settings, showAppearEffects);
+            return this.original.call(ig.game, type, x, y, z, settings, showAppearEffects) as T;
         }
 
         const entity = this.original.call(ig.game, type, x, y, z, settings, showAppearEffects) as IMultiplayerEntity;
@@ -80,7 +80,7 @@ export class OnEntitySpawnListener {
                 }
             }
 
-            return entity;
+            return entity as unknown as T;
         }
 
         if (entity && !entity.multiplayerId) {
@@ -117,13 +117,13 @@ export class OnEntitySpawnListener {
             entity.lastPosition = {x, y, z};
         }
 
-        return entity;
+        return entity as unknown as T;
     }
 
     private filterBall(settings: {
         ballInfo: any
         combatant: ig.Entity,
-        dir: ig.Vector2,
+        dir: Vec2,
         party: number,
     }): IBallInfo | null {
         const player = ig.game.playerEntity;
@@ -135,7 +135,10 @@ export class OnEntitySpawnListener {
                 if (proxy !== undefined && proxy.data === settings.ballInfo) {
                     return {
                         ballInfo: name,
-                        combatant: settings.combatant === null ? null : settings.combatant.multiplayerId,
+                        combatant:
+                            settings.combatant === null
+                                ? null
+                                : (settings.combatant as IMultiplayerEntity).multiplayerId,
                         dir: settings.dir,
                         party: settings.party,
                     };

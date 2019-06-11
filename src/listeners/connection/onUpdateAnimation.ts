@@ -9,7 +9,7 @@ export class OnUpdateAnimationListener {
         this.main.connection.onUpdateAnimation(this.onUpdateAnimation.bind(this));
     }
 
-    public onUpdateAnimation(player: string, face: ig.Vector2, anim: string): void {
+    public onUpdateAnimation(player: string, face: Vec2, anim: string): void {
         const pl = this.main.players[player];
         if (pl && pl.entity) {
             pl.entity.face.x = face.x;
@@ -35,6 +35,6 @@ export class OnUpdateAnimationListener {
                     type: 'WAIT',
                     time: -1,
                 }],
-        }).start({});
+        }).start({} as ig.EVENT_STEP.DO_ACTION);
     }
 }

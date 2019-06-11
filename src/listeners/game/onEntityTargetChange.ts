@@ -18,7 +18,7 @@ export class OnEntityTargetChangeListener {
     }
 
     public onEntityTargetChanged(entity: IMultiplayerEntity, t: ig.Entity | null): void {
-        const target = entity.target ? (entity.target.multiplayerId || 0) : null;
+        const target = entity.target ? ((entity.target as IMultiplayerEntity).multiplayerId || 0) : null;
 
         this.main.connection.updateEntityTarget(entity.multiplayerId, target);
     }

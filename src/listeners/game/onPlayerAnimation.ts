@@ -4,7 +4,7 @@ import { PlayerListener } from './playerListener';
 export class OnPlayerAnimationListener {
 
     private lastAnim = '';
-    private lastFace: ig.Vector2 = {x: 0, y: 0};
+    private lastFace: Vec2 = {x: 0, y: 0};
 
     constructor(
         private main: Multiplayer,
@@ -12,16 +12,16 @@ export class OnPlayerAnimationListener {
 
     public register(playerListener: PlayerListener): void {
         const instance = this;
-        playerListener.addChild((player: ig.Player) => {
+        playerListener.addChild((player: ig.ENTITY.Player) => {
             instance.onUpdate(player);
         });
     }
 
-    public onPlayerAnimation(player: ig.Player, animation: string, face: ig.Vector2): void {
+    public onPlayerAnimation(player: ig.ENTITY.Player, animation: string, face: Vec2): void {
         this.main.connection.updateAnimation(face, animation);
     }
 
-    private onUpdate(player: ig.Player): void {
+    private onUpdate(player: ig.ENTITY.Player): void {
         const animation = player.currentAnim;
         const face = player.face;
 
@@ -32,12 +32,12 @@ export class OnPlayerAnimationListener {
         }
     }
 
-    private compareFace(left: ig.Vector2, right: ig.Vector2): boolean {
+    private compareFace(left: Vec2, right: Vec2): boolean {
         return left.x === right.x &&
             left.y === right.y;
     }
 
-    private copyFace(from: ig.Vector2, to: ig.Vector2): void {
+    private copyFace(from: Vec2, to: Vec2): void {
         to.x = from.x;
         to.y = from.y;
     }

@@ -112,8 +112,9 @@ export class Multiplayer {
     }
 
     public registerEntity(entity: ig.Entity): number {
-        entity.multiplayerId = this.nextEID;
-        const converted = this.entities[this.nextEID] = entity as IMultiplayerEntity;
+        const converted = entity as IMultiplayerEntity;
+        converted.multiplayerId = this.nextEID;
+        this.entities[this.nextEID] = converted;
         this.nextEID++;
 
         return converted.multiplayerId;
@@ -123,8 +124,8 @@ export class Multiplayer {
         new sc.EnemyType(e.settings.enemyInfo.type).load(() => {
             const entity = this.entitySpawnListener.onEntitySpawned(e.type, e.pos.x, e.pos.y, e.pos.z, e.settings);
 
-            this.entities[e.id] = entity as IMultiplayerEntity;
-            entity.multiplayerId = e.id;
+            const me = this.entities[e.id] = entity as IMultiplayerEntity;
+            me.multiplayerId = e.id;
 
             const protectedPos = {xProtected: e.pos.x, yProtected: e.pos.y, zProtected: e.pos.z};
             Object.defineProperty(protectedPos, 'x', { get() { return protectedPos.xProtected; }, set() { return; } });
@@ -133,21 +134,21 @@ export class Multiplayer {
             Object.defineProperty(entity.coll, 'pos',
                 { get() { return protectedPos; }, set() {console.log('tried to maniplulate pos'); } });
 
-            let protectedAnim = entity.currentAnim;
+            let protectedAnim = me.currentAnim;
 
             Object.defineProperty(entity, 'currentAnim', {
                 get() { return protectedAnim; },
                 set(data) { if (data.protected) { protectedAnim = data.protected; } },
             });
 
-            const protectedFace = !!entity.face ? {xProtected: entity.face.x, yProtected: entity.face.y}
+            const protectedFace = !!me.face ? {xProtected: me.face.x, yProtected: me.face.y}
                                                 : {xProtected: 0, yProtected: 0};
             Object.defineProperty(protectedFace, 'x', {get() { return protectedFace.xProtected; }, set() { return; } });
             Object.defineProperty(protectedFace, 'y', {get() { return protectedFace.yProtected; }, set() { return; } });
             Object.defineProperty(entity, 'face',
                 { get() { return protectedFace; }, set() {console.log('tried to maniplulate face'); } });
 
-            let protectedState = entity.currentState;
+            let protectedState = me.currentState;
             Object.defineProperty(entity, 'currentState', {
                 get() { return protectedState; },
                 set(data) { if (data.protected) { protectedState = data.protected; } },
@@ -155,12 +156,12 @@ export class Multiplayer {
         });
     }
 
-    public copyPosition(from: ig.Vector3, to: ig.Vector3) {
+    public copyPosition(from: Vec3, to: Vec3) {
         to.x = from.x;
         to.y = from.y;
         to.z = from.z;
     }
-    public copyEntityPosition(from: ig.Vector3, to: any) {
+    public copyEntityPosition(from: Vec3, to: any) {
         if (!to.xProtected) {
             return this.copyPosition(from, to);
         }
@@ -173,7 +174,9 @@ export class Multiplayer {
     private initializeGUI(): void {
         const buttonNumber = ig.platform === 1 ? 2 : 1;
 
-        const buttons = ig.gui.menues[15].children[2].gui.buttons;
+        const title = ig.gui.guiHooks.find((hook) => hook.gui instanceof sc.TitleScreenGui)!;
+        const titleButtonGui = title.children[2].gui as sc.TitleScreenButtonGui;
+        const buttons = titleButtonGui.buttons;
         // buttons.splice(buttonNumber, 2);
         // buttons[2].a.g.y = 80;
         buttons[buttonNumber].setText('Connect', true);
@@ -293,7 +296,7 @@ export class Multiplayer {
             box.addClass('shown');
             ig.system.setFocusLost();
 
-            ig.system.addFocusListener(() => {
+            ig.system.addFocusListener((_) => {
                 box.remove();
             });
 

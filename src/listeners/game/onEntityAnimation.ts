@@ -5,7 +5,7 @@ import { EntityListener } from './entityListener';
 export class OnEntityAnimationListener {
 
     private lastAnim = '';
-    private lastFace: ig.Vector2 = {x: 0, y: 0};
+    private lastFace: Vec2 = {x: 0, y: 0};
 
     constructor(
         private main: Multiplayer,
@@ -18,7 +18,7 @@ export class OnEntityAnimationListener {
         });
     }
 
-    public onEntityAnimation(entity: IMultiplayerEntity, animation: string, face: ig.Vector2): void {
+    public onEntityAnimation(entity: IMultiplayerEntity, animation: string, face: Vec2): void {
         this.main.connection.updateEntityAnimation(entity.multiplayerId, face, animation);
     }
 
@@ -33,12 +33,12 @@ export class OnEntityAnimationListener {
         }
     }
 
-    private compareFace(left: ig.Vector2, right: ig.Vector2): boolean {
+    private compareFace(left: Vec2, right: Vec2): boolean {
         return left.x === right.x &&
             left.y === right.y;
     }
 
-    private copyFace(from: ig.Vector2, to: ig.Vector2): void {
+    private copyFace(from: Vec2, to: Vec2): void {
         to.x = from.x;
         to.y = from.y;
     }

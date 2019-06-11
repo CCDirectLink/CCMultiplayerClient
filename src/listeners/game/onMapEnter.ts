@@ -7,7 +7,7 @@ export class OnMapEnterListener {
 
     public register(): void {
         const originalLoad = ig.game.loadLevel;
-        ig.game.loadLevel = (data: ig.Map) => {
+        ig.game.loadLevel = (data: MapData) => {
             this.onMapEnter(data);
             const result = originalLoad.call(ig.game, data);
             this.main.loadingMap = false;
@@ -15,7 +15,7 @@ export class OnMapEnterListener {
         };
     }
 
-    public onMapEnter(data: ig.Map): void {
+    public onMapEnter(data: MapData): void {
         this.loadEntity('multiplayer');
 
         if (!this.main.host) {

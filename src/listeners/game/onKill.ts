@@ -1,3 +1,4 @@
+import { IMultiplayerEntity } from '../../mpEntity';
 import { Multiplayer } from '../../multiplayer';
 
 export class OnEntityKilledListener {
@@ -9,10 +10,10 @@ export class OnEntityKilledListener {
         const self = this;
         const originalKill = ig.Entity.prototype.kill;
         ig.Entity.prototype.kill = function(this: ig.Entity, ...args: any) {
-            if (this.multiplayerId) {
-                self.onEntityKilled(this.multiplayerId);
-                this.multiplayerId = undefined;
-                delete this.multiplayerId;
+            const converted = this as IMultiplayerEntity;
+            if (converted.multiplayerId) {
+                self.onEntityKilled(converted.multiplayerId);
+                delete converted.multiplayerId;
             }
 
             return originalKill.apply(this, args);

@@ -1,7 +1,7 @@
 import { Multiplayer } from '../../multiplayer';
 
 export class PlayerListener {
-    private children: Array<(player: ig.Player) => any> = [];
+    private children: Array<(player: ig.ENTITY.Player) => any> = [];
 
     constructor(
         private main: Multiplayer,
@@ -13,7 +13,7 @@ export class PlayerListener {
         });
     }
 
-    public addChild(child: (player: ig.Player) => any) {
+    public addChild(child: (player: ig.ENTITY.Player) => any) {
         this.children.push(child);
     }
 

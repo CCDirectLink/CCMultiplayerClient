@@ -1,11 +1,11 @@
-declare let simplify : simplify;
+declare let simplify: simplify;
 
 interface simplify {
     font: simplify.font;
     options: simplify.options;
     resources: simplify.resources;
 
-    registerUpdate(func: Function): void;
+    registerUpdate(func: (...args: any[]) => any): void;
     fireUpdate(): void;
 
     loadScript(url: string): Promise<void>;
@@ -25,7 +25,7 @@ declare namespace simplify {
     interface font {
         pushIconSet(set: ig.Font): number;
         prepareMapping(mapping: font.IconMapping, page: number): void;
-        setMapping(mapping: font.IconMapping) : void;
+        setMapping(mapping: font.IconMapping): void;
     }
     namespace font {
         interface IconMapping {

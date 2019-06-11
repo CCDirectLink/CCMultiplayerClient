@@ -13,7 +13,7 @@ export class OnPlayerChangeMapListener {
 
     public onPlayerChangeMap(player: string,
                              enters: boolean,
-                             position: ig.Vector3,
+                             position: Vec3,
                              map: string,
                              marker: string | null): void {
         if (enters) {
@@ -45,7 +45,7 @@ export class OnPlayerChangeMapListener {
             this.main.players[player] = undefined;
             delete this.main.players[player];
 
-            ig.game.teleport(map, ig.TeleportPosition.createFromJson({marker}));
+            ig.game.teleport(map, ig.TeleportPosition.createFromJson({marker: marker as string}));
             this.main.connection.changeMap(map, marker);
         }
     }

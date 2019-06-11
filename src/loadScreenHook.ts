@@ -5,8 +5,8 @@ export class LoadScreenHook {
             this.hook(function(this: LoadScreenHook, box: sc.ButtonListBox) {
                 box.clear();
 
-                const name = this.clearHandlers(box);
-                this.addHandler(box, name, (button: sc.SaveSlotButton) => {
+                this.clearHandlers(box);
+                this.addHandler(box, (button: sc.SaveSlotButton) => {
                     resolve(servers.indexOf(button.autoSlotMiss.text));
                 });
 
@@ -30,32 +30,18 @@ export class LoadScreenHook {
     }
 
     public addButton(box: sc.ButtonListBox, name: string, index?: number) {
-        const button = new sc.SaveSlotButton(null, 0);
+        const button = new sc.SaveSlotButton(undefined, 0);
         button.autoSlotMiss.setText(name);
 
         box.addButton(button, false);
     }
 
-    private clearHandlers(box: sc.ButtonListBox): string {
-        let result = '';
-        const buttonGroup = box.buttonGroup;
-        for (const key in buttonGroup) {
-            if (buttonGroup.hasOwnProperty(key)) {
-                const value = buttonGroup[key];
-                if (value instanceof Array) {
-                    if (value.length === 1 && value[0] instanceof Function) {
-                        result = key;
-                        buttonGroup[key] = [];
-                    } else if (value.length > 1 && value[0] instanceof Function) {
-                        buttonGroup[key] = [];
-                    }
-                }
-            }
-        }
-        return result;
+    private clearHandlers(box: sc.ButtonListBox): void {
+        box.buttonGroup.pressCallbacks = [];
+        box.buttonGroup.selectionCallbacks = [];
     }
 
-    private addHandler(box: sc.ButtonListBox, name: string, callback: (button: sc.SaveSlotButton) => void) {
-        box.buttonGroup[name].push(callback);
+    private addHandler(box: sc.ButtonListBox, callback: (button: sc.SaveSlotButton) => void) {
+        box.buttonGroup.pressCallbacks.push((button) => callback(button as sc.SaveSlotButton));
     }
 }

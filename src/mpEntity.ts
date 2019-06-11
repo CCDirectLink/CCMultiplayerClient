@@ -1,11 +1,7 @@
-export interface IMultiplayerEntity extends ig.Entity {
+export interface IMultiplayerEntity extends ig.ENTITY.Enemy {
     multiplayerId: number;
     target: ig.Entity | null;
-    face: ig.Vector2;
     lastTarget: ig.Entity | null;
-    lastPosition: ig.Vector3 | null;
-    currentState: any;
-    currentAnim: string;
-    proxies: sc.CombatProxyEntity[];
-    params: sc.CombatParams;
+    lastPosition: Vec3 | null;
+    proxies: {[name: string]: sc.ProxySpawnerBase} | null;
 }

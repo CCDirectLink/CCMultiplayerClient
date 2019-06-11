@@ -9,7 +9,7 @@ export class OnUpdatePositionListener {
         this.main.connection.onUpdatePostion(this.onUpdatePostion.bind(this));
     }
 
-    public onUpdatePostion(player: string, position: ig.Vector3): void {
+    public onUpdatePostion(player: string, position: Vec3): void {
         const pl = this.main.players[player];
         if (pl && pl.entity) {
             pl.entity.coll.pos = position;

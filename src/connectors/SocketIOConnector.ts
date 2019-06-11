@@ -98,10 +98,10 @@ export class SocketIoConnector implements IConnection {
         this.marker = marker;
         this.socket.emit('changeMap', {name, marker});
     }
-    public updatePersition(position: ig.Vector3): void {
+    public updatePersition(position: Vec3): void {
         this.socket.emit('updatePosition', position);
     }
-    public updateAnimation(face: ig.Vector2, anim: string): void {
+    public updateAnimation(face: Vec2, anim: string): void {
         this.socket.emit('updateAnimation', {face, anim});
     }
     public updateTimer(timer: number): void {
@@ -111,7 +111,7 @@ export class SocketIoConnector implements IConnection {
     public spawnEntity(type: string, x: number, y: number, z: number, settings?: object, showEffects?: boolean): void {
         this.socket.emit('spawnEntity', {type, x, y, z, settings, showAppearEffects: showEffects});
     }
-    public registerEntity(id: number, type: string, pos: ig.Vector3, settings: object): void {
+    public registerEntity(id: number, type: string, pos: Vec3, settings: object): void {
         this.socket.emit('registerEntity', {id, type, pos, settings});
     }
     public killEntity(id: number): void {
@@ -122,10 +122,10 @@ export class SocketIoConnector implements IConnection {
         this.socket.emit('throwBall', ballInfo);
     }
 
-    public updateEntityPosition(id: number, pos: ig.Vector3): void {
+    public updateEntityPosition(id: number, pos: Vec3): void {
         this.socket.emit('updateEntityPosition', {id, pos});
     }
-    public updateEntityAnimation(id: number, face: ig.Vector2, anim: string): void {
+    public updateEntityAnimation(id: number, face: Vec2, anim: string): void {
         this.socket.emit('updateEntityAnimation', {id, face, anim});
     }
     public updateEntityHealth(id: number | null, health: number): void {
@@ -146,17 +146,17 @@ export class SocketIoConnector implements IConnection {
     }
 
     public onPlayerChangeMap(callback:
-        (player: string, enters: boolean, position: ig.Vector3, map: string, marker: string | null) => void): void {
+        (player: string, enters: boolean, position: Vec3, map: string, marker: string | null) => void): void {
         this.socket.on('onPlayerChangeMap', (data: any) => {
             callback(data.player, data.enters, data.position, data.map, data.marker);
         });
     }
-    public onUpdatePostion(callback: (player: string, pos: ig.Vector3) => void): void {
+    public onUpdatePostion(callback: (player: string, pos: Vec3) => void): void {
         this.socket.on('updatePosition', (data: any) => {
             callback(data.player, data.pos);
         });
     }
-    public onUpdateAnimation(callback: (player: string, face: ig.Vector2, anim: string) => void): void {
+    public onUpdateAnimation(callback: (player: string, face: Vec2, anim: string) => void): void {
         this.socket.on('updateAnimation', (data: any) => {
             callback(data.player, data.face, data.anim);
         });
@@ -171,7 +171,7 @@ export class SocketIoConnector implements IConnection {
             callback(data);
         });
     }
-    public onRegisterEntity(callback: (id: number, type: string, pos: ig.Vector3, settings: object) => void): void {
+    public onRegisterEntity(callback: (id: number, type: string, pos: Vec3, settings: object) => void): void {
         this.socket.on('registerEntity', (data: any) => {
             callback(data.id, data.type, data.pos, data.settings);
         });
@@ -181,12 +181,12 @@ export class SocketIoConnector implements IConnection {
             callback(data.id);
         });
     }
-    public onUpdateEntityPosition(callback: (id: number, pos: ig.Vector3) => void): void {
+    public onUpdateEntityPosition(callback: (id: number, pos: Vec3) => void): void {
         this.socket.on('updateEntityPosition', (data: any) => {
             callback(data.id, data.pos);
         });
     }
-    public onUpdateEntityAnimation(callback: (id: number, face: ig.Vector2, anim: string) => void): void {
+    public onUpdateEntityAnimation(callback: (id: number, face: Vec2, anim: string) => void): void {
         this.socket.on('updateEntityAnimation', (data: any) => {
             callback(data.id, data.face, data.anim);
         });

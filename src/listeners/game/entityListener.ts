@@ -22,7 +22,7 @@ export class EntityListener {
         const entities = ig.game.entities;
         for (let i = 0; i < entities.length; i++) {
             const entity = ig.game.entities[i];
-            if (!entity.multiplayerId || !(entity instanceof (ig.ENTITY.Enemy as any))) {
+            if (!(entity as IMultiplayerEntity).multiplayerId || !(entity instanceof (ig.ENTITY.Enemy as any))) {
                 continue;
             }
 

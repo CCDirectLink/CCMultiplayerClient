@@ -12,7 +12,7 @@ export class OnPlayerHealthChangeListener {
 
     public register(playerListener: PlayerListener): void {
         const instance = this;
-        playerListener.addChild((player: ig.Player) => {
+        playerListener.addChild((player: ig.ENTITY.Player) => {
             instance.onUpdate(player);
         });
     }
@@ -21,8 +21,8 @@ export class OnPlayerHealthChangeListener {
         this.main.connection.updateEntityHealth(null, health);
     }
 
-    private onUpdate(player: ig.Player): void {
-        const health = player.params.getStat("hp");
+    private onUpdate(player: ig.ENTITY.Player): void {
+        const health = player.params.getStat('hp');
 
         if (health !== this.last) {
             this.onPlayerHealthChanged(health);

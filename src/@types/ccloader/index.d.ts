@@ -8,15 +8,8 @@ declare const entries: Readonly<{
     entityData: string,
     Timer: string,
     init: string,
-    gameMainSpawnEntity: string
-}>
-
-/**
- * You should never be able to aquire an instance of this in a mod
- */
-interface CCLoader {
-
-}
+    gameMainSpawnEntity: string,
+}>;
 
 interface Mod {
     readonly baseDirectory: string;
@@ -26,10 +19,10 @@ interface Mod {
     readonly isEnabled: boolean;
 
     initialize(): void;
-    load(cb: Function): void;
-    onload(cb: Function): void;
+    load(cb: (...args: any[]) => any): void;
+    onload(cb: (...args: any[]) => any): void;
     getAsset(path: string): string;
     setAsset(original: string, modified: string): void;
-    initializeTable(ccloader: CCLoader, cb: Function): void;
-    executeTable(ccloader: CCLoader): void;
+    initializeTable(ccloader: void, cb: (...args: any[]) => any): void;
+    executeTable(ccloader: void): void;
 }

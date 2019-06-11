@@ -2,6 +2,6 @@ import { IMultiplayerEntity } from './mpEntity';
 
 export interface IPlayer {
     name: string;
-    position: ig.Vector3;
+    position: Vec3;
     entity: IMultiplayerEntity;
 }

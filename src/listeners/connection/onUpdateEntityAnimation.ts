@@ -9,7 +9,7 @@ export class OnUpdateEntityAnimationListener {
         this.main.connection.onUpdateEntityAnimation(this.onUpdateEntityAnimation.bind(this));
     }
 
-    public onUpdateEntityAnimation(id: number, face: ig.Vector2, anim: string): void {
+    public onUpdateEntityAnimation(id: number, face: Vec2, anim: string): void {
         if (this.main.host || !this.main.entities[id]) {
             return;
         }
@@ -17,9 +17,9 @@ export class OnUpdateEntityAnimationListener {
         this.setEntityAnimation({face, anim}, this.main.entities[id]);
     }
 
-    private setEntityAnimation(from: {face: ig.Vector2, anim: string}, to: ig.Entity) {
-        to.face.xProtected = from.face.x;
-        to.face.yProtected = from.face.y;
+    private setEntityAnimation(from: {face: Vec2, anim: string}, to: ig.ActorEntity) {
+        (to.face as any).xProtected = from.face.x;
+        (to.face as any).yProtected = from.face.y;
         to.currentAnim = {protected: from.anim} as unknown as string;
     }
 }
