@@ -45,6 +45,7 @@ declare namespace sc {
     class CrossCode extends ig.Game {
         public start(mode?: sc.START_MODE, transition?: number): void;
         public update(): void;
+        public isTeleporting(): boolean;
     }
 
     class GameModel extends ig.GameAddon {
@@ -143,8 +144,8 @@ declare namespace sc {
 
 declare namespace ig {
     class Class {
-        public inject(injected: object): Class;
-        public extend(extended: object): Class;
+        public static inject(injected: object): Class;
+        public static extend(extended: object): Class;
     }
 
     class Game extends ig.Class {
@@ -380,7 +381,7 @@ declare namespace ig {
     namespace ACTION_STEP {
         class SHOOT_PROXY extends ig.ActionStepBase {
             constructor(settings: {
-                proxy: ProxyData | sc.ProxySpawnerBase,
+                proxy: string | ProxyData | sc.ProxySpawnerBase,
                 offset?: Vec3,
                 align?: Vec2,
                 dir?: Vec2,

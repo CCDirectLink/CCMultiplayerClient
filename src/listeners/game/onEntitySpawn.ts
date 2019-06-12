@@ -24,16 +24,19 @@ export class OnEntitySpawnListener {
                                                     z: number,
                                                     settings: any,
                                                     showAppearEffects?: boolean) => {
-            return this.onEntitySpawned(type, x, y, z, settings, showAppearEffects);
+            if (settings && settings.skipHook) {
+                return this.original.call(ig.game, type, x, y, z, settings, showAppearEffects) as T;
+            }
+            return this.onEntitySpawned(type as string | typeof ig.Entity, x, y, z, settings, showAppearEffects) as T;
         };
     }
 
-    public onEntitySpawned<T extends ig.Entity>(type: string | (new(...args: any[]) => T),
-                                                x: number,
-                                                y: number,
-                                                z: number,
-                                                settings: any,
-                                                showAppearEffects?: boolean): T {
+    public onEntitySpawned(type: string | typeof ig.Entity,
+                           x: number,
+                           y: number,
+                           z: number,
+                           settings: any,
+                           showAppearEffects?: boolean): ig.Entity {
         const blacklist: Array<string | typeof ig.Entity> = [
             'Marker',
             'HiddenBlock',
@@ -49,7 +52,7 @@ export class OnEntitySpawnListener {
         ];  // Static objects that never change or objects that should never be synced
 
         if (blacklist.indexOf(type) >= 0) {
-            return this.original.call(ig.game, type, x, y, z, settings, showAppearEffects) as T;
+            return this.original.call(ig.game, type, x, y, z, settings, showAppearEffects);
         }
 
         if (typeof type !== 'string' && type.prototype === ig.ENTITY.Ball.prototype) {
@@ -62,7 +65,7 @@ export class OnEntitySpawnListener {
             } else {
                 console.warn('Could not find type of ball. Maybe something else threw the ball?');
             }
-            return this.original.call(ig.game, type, x, y, z, settings, showAppearEffects) as T;
+            return this.original.call(ig.game, type, x, y, z, settings, showAppearEffects);
         }
 
         const entity = this.original.call(ig.game, type, x, y, z, settings, showAppearEffects) as IMultiplayerEntity;
@@ -80,7 +83,7 @@ export class OnEntitySpawnListener {
                 }
             }
 
-            return entity as unknown as T;
+            return entity;
         }
 
         if (entity && !entity.multiplayerId) {
@@ -117,7 +120,7 @@ export class OnEntitySpawnListener {
             entity.lastPosition = {x, y, z};
         }
 
-        return entity as unknown as T;
+        return entity;
     }
 
     private filterBall(settings: {
