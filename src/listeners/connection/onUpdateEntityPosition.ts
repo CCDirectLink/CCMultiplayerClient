@@ -1,19 +1,19 @@
 import { Multiplayer } from '../../multiplayer';
 
 export class OnUpdateEntityPositionListener {
-    constructor(
+	constructor(
         private main: Multiplayer,
-    ) { }
+	) { }
 
-    public register(): void {
-        this.main.connection.onUpdateEntityPosition(this.onUpdateEntityPosition.bind(this));
-    }
+	public register(): void {
+		this.main.connection.onUpdateEntityPosition(this.onUpdateEntityPosition.bind(this));
+	}
 
-    public onUpdateEntityPosition(id: number, pos: Vec3): void {
-        if (this.main.host || !this.main.entities[id]) {
-            return;
-        }
+	public onUpdateEntityPosition(id: number, pos: Vec3): void {
+		if (this.main.host || !this.main.entities[id]) {
+			return;
+		}
 
-        this.main.copyEntityPosition(pos, this.main.entities[id].coll.pos);
-    }
+		this.main.copyEntityPosition(pos, this.main.entities[id].coll.pos);
+	}
 }

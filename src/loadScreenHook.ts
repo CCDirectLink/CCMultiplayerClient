@@ -1,47 +1,47 @@
 export class LoadScreenHook {
-    public displayServers(servers: string[],
-                          loadMenu: () => void): Promise<number> {
-        return new Promise((resolve, reject) => {
-            this.hook(function(this: LoadScreenHook, box: sc.ButtonListBox) {
-                box.clear();
+	public displayServers(servers: string[],
+		loadMenu: () => void): Promise<number> {
+		return new Promise((resolve) => {
+			this.hook(function(this: LoadScreenHook, box: sc.ButtonListBox) {
+				box.clear();
 
-                this.clearHandlers(box);
-                this.addHandler(box, (button: sc.SaveSlotButton) => {
-                    resolve(servers.indexOf(button.autoSlotMiss.text));
-                });
+				this.clearHandlers(box);
+				this.addHandler(box, (button: sc.SaveSlotButton) => {
+					resolve(servers.indexOf(button.autoSlotMiss.text));
+				});
 
-                for (let i = 0; i < servers.length; i++) {
-                    this.addButton(box, servers[i], i);
-                }
-            }.bind(this));
+				for (let i = 0; i < servers.length; i++) {
+					this.addButton(box, servers[i]);
+				}
+			}.bind(this));
 
-            loadMenu();
-        }) ;
-    }
+			loadMenu();
+		}) ;
+	}
 
-    public hook(callback: (box: sc.ButtonListBox) => void): void {
-        const original = sc.ButtonListBox.prototype.activate;
-        sc.ButtonListBox.prototype.activate = function(this: sc.ButtonListBox, ...args: any) {
-            const result = original.apply(this, args);
-            callback(this);
-            sc.ButtonListBox.prototype.activate = original;
-            return result;
-        };
-    }
+	public hook(callback: (box: sc.ButtonListBox) => void): void {
+		const original = sc.ButtonListBox.prototype.activate;
+		sc.ButtonListBox.prototype.activate = function(this: sc.ButtonListBox, ...args: any) {
+			const result = original.apply(this, args);
+			callback(this);
+			sc.ButtonListBox.prototype.activate = original;
+			return result;
+		};
+	}
 
-    public addButton(box: sc.ButtonListBox, name: string, index?: number) {
-        const button = new sc.SaveSlotButton(undefined, 0);
-        button.autoSlotMiss.setText(name);
+	public addButton(box: sc.ButtonListBox, name: string) {
+		const button = new sc.SaveSlotButton(undefined, 0);
+		button.autoSlotMiss.setText(name);
 
-        box.addButton(button, false);
-    }
+		box.addButton(button, false);
+	}
 
-    private clearHandlers(box: sc.ButtonListBox): void {
-        box.buttonGroup.pressCallbacks = [];
-        box.buttonGroup.selectionCallbacks = [];
-    }
+	private clearHandlers(box: sc.ButtonListBox): void {
+		box.buttonGroup.pressCallbacks = [];
+		box.buttonGroup.selectionCallbacks = [];
+	}
 
-    private addHandler(box: sc.ButtonListBox, callback: (button: sc.SaveSlotButton) => void) {
-        box.buttonGroup.pressCallbacks.push((button) => callback(button as sc.SaveSlotButton));
-    }
+	private addHandler(box: sc.ButtonListBox, callback: (button: sc.SaveSlotButton) => void) {
+		box.buttonGroup.pressCallbacks.push((button) => callback(button as sc.SaveSlotButton));
+	}
 }

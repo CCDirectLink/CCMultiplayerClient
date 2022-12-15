@@ -1,32 +1,32 @@
 import { Multiplayer } from './multiplayer';
 
 async function startMultiplayer(): Promise<void> {
-    try {
-        await waitForMods();
+	try {
+		await waitForMods();
 
-        const multiplayer = new Multiplayer();
+		const multiplayer = new Multiplayer();
 
-        console.log('[multiplayer] Loading..');
+		console.log('[multiplayer] Loading..');
 
-        await multiplayer.load();
+		await multiplayer.load();
 
-        console.log('[multiplayer] Loaded');
+		console.log('[multiplayer] Loaded');
 
-        multiplayer.initialize();
+		multiplayer.initialize();
 
-        console.log('[multiplayer] Initialized');
-    } catch (e) {
-        console.error(e);
-    }
+		console.log('[multiplayer] Initialized');
+	} catch (e) {
+		console.error(e);
+	}
 }
 
 async function waitForMods(): Promise<void> {
-    await new Promise((resolve, reject) => {
-        document.body.addEventListener('modsLoaded', () => {
-            resolve();
-        });
-    });
+	await new Promise<void>((resolve) => {
+		document.body.addEventListener('modsLoaded', () => {
+			resolve();
+		});
+	});
 }
 
 startMultiplayer()
-    .catch(console.error.bind(console));
+	.catch(console.error.bind(console));

@@ -15,6 +15,7 @@
       "dom",
       "scripthost"
     ],
+    "moduleResolution": "Node",
     "removeComments": true
   },
   "include": [

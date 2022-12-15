@@ -4,12 +4,9 @@
 		"port": 1423,
 		"type": "http"
 	},{
-		"hostname": "ccmultiplayerserver.herokuapp.com",
-		"port": 80,
-		"type": "http"
-	},{
-		"hostname": "ccmultiplayer-usa.herokuapp.com",
-		"port": 80,
+		"display": "Public server (Germany)",
+		"hostname": "130.162.212.177",
+		"port": 1423,
 		"type": "http"
 	}]
 }
